@@ -112,7 +112,7 @@
                     </script>
                   <?php
 
-                 $account_created="<p style='color:teal;text-align:center;' id='account_created'>Account created , wait for admin's approval</p>";
+                 $account_created="<p style='color:teal;text-align:center;' id='account_created'>Account created well</p>";
                }
             }
         }
