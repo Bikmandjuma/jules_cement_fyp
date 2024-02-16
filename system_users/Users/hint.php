@@ -144,3 +144,103 @@
 </body>
 
 </html>
+
+<?php
+
+// Include the database connection file
+include 'db_connection.php';
+
+// Fetch analytical data from the database
+$sql = "SELECT metric, value FROM analytics_data";
+$result = $conn->query($sql);
+
+// Prepare data for JSON encoding
+$data = array();
+while ($row = $result->fetch_assoc()) {
+    $data[$row['metric']][] = $row['value'];
+}
+
+// Convert data to JSON format
+echo json_encode($data);
+
+// Close the database connection
+$conn->close();
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="analyticsChart" width="800" height="400"></canvas>
+    
+    <script>
+        // Fetch data from fetch_data.php using AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'fetch_data.php', true);
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                // Parse JSON response
+                var data = JSON.parse(xhr.responseText);
+
+                // Extract metrics and values
+                var metrics = Object.keys(data);
+                var values = Object.values(data);
+
+                // Prepare chart data
+                var chartData = {
+                    labels: metrics,
+                    datasets: [{
+                        label: 'Analytics Data',
+                        data: values[0], // Assuming only one set of data for simplicity
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                };
+
+                // Create chart
+                var ctx = document.getElementById('analyticsChart').getContext('2d');
+                var analyticsChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: chartData,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        };
+        xhr.send();
+    </script>
+</body>
+</html>
+
+<?php
+
+// Database connection parameters
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "database_name";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+?>
+
+
