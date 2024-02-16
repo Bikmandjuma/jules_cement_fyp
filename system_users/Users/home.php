@@ -1,6 +1,6 @@
 <?php
     session_start();
-
+    
     if (!isset($_SESSION['email'])) {
       ?>
         <script type="text/javascript">
@@ -8,63 +8,69 @@
         </script>
       <?php
     }
-
-    include "../../php_code/codes.php";
     
-    $ifaida=new Ifaida;
+    include "../../php_code/codes.php";
+    include "../../Connect/connection.php";
+    
+    $cement=new Cement;
 
+    $users_id=$_SESSION['u_id'];
+    $sql_user_info="SELECT * FROM admin where a_id=".$users_id."";
+    $query_user_info=mysqli_query($con,$sql_user_info);
+    while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
+      $admin_image=$row_user_info['image'];
+    }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <?php require 'head.php';?>
 
 <body class="g-sidenav-show  bg-gray-200">
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-secondary" id="sidenav-main">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
-        <img src="../../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">Ifaida</span>
+      <a class="navbar-brand m-0" href="#" target="_blank">
+        <img src="../../assets/img/admin/<?php echo $admin_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white"><?php echo $_SESSION['name'];?></span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white" href="../pages/dashboard.html">
+          <a class="nav-link text-white active bg-gradient-info" href="#" onclick="window.location.href='home.php'">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">Page 1</i>
+              <i class="material-icons opacity-10">dashboard</i>
             </div>
-            <span class="nav-link-text ms-1">Page 1</span>
+            <span class="nav-link-text ms-1">Dashboard</span>
           </a>
         </li>
     
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">Page 2</i>
-            </div>
-            <span class="nav-link-text ms-1">Page 2</span>
+          <a class="nav-link text-white " href="#" onclick="window.location.href='users.php'">
+            <!-- <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons">users</i>
+            </div> -->
+            <span class="nav-link-text ms-1"><i class="fas fa-users"></i>&nbsp;&nbsp;Users</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">Page 3</i>
-            </div>
-            <span class="nav-link-text ms-1">Page 3</span>
+          <a class="nav-link text-white " href="#" onclick="window.location.href='report.php'">
+            <span class="nav-link-text ms-1"> <i class="far fa-file-alt"></i>&nbsp;&nbsp;Reports</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-up.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">Page 4</i>
-            </div>
-            <span class="nav-link-text ms-1">Page 4</span>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="nav-link-text ms-1"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Settings</span>
           </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#" onclick="window.location.href='profile.php'"><i class="fa fa-image"></i>&nbsp;&nbsp;Profile picture</a></li>
+            <li><a class="dropdown-item" href="#" onclick="window.location.href='password.php'"><i class="fa fa-key"></i>&nbsp;&nbsp;Password</a></li>
+          </ul>
         </li>
+
       </ul>
     </div>
 
@@ -81,113 +87,30 @@
           <h6 class="font-weight-bolder mb-0">Dashboard</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+          <!-- <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             <div class="input-group input-group-outline">
               <label class="form-label">Type here...</label>
               <input type="text" class="form-control">
             </div>
-          </div>
+          </div> -->
+          <?php
+            require 'search.php';
+          ?>
           <ul class="navbar-nav  justify-content-end">
            <!--  <li class="nav-item d-flex align-items-center">
               <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="https://www.creative-tim.com/builder/material?ref=navbar-dashboard">Online Builder</a>
             </li> -->
             <li class="nav-item d-flex align-items-center">
-              <a href="#" class="nav-link text-body font-weight-bold px-0">
+              <a href="#" class="nav-link text-body font-weight-bold px-0" data-bs-toggle="modal" data-bs-target="#logoutModal">
                 <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none" onclick="window.location.href='../../logout.php'">Logout</span>
+                <span class="d-sm-inline d-none">Logout</span>
               </a>
-            </li>
-            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                <div class="sidenav-toggler-inner">
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                </div>
-              </a>
-            </li>
-            <li class="nav-item px-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0">
-                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
-              </a>
-            </li>
-            <li class="nav-item dropdown pe-2 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-bell cursor-pointer"></i>
-              </a>
-              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
-                <li class="mb-2">
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="my-auto">
-                        <img src="../assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          <span class="font-weight-bold">New message</span> from Laur
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          13 minutes ago
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li class="mb-2">
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="my-auto">
-                        <img src="../assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm bg-gradient-dark  me-3 ">
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          <span class="font-weight-bold">New album</span> by Travis Scott
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          1 day
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
-                        <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <title>credit-card</title>
-                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                              <g transform="translate(1716.000000, 291.000000)">
-                                <g transform="translate(453.000000, 454.000000)">
-                                  <path class="color-background" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z" opacity="0.593633743"></path>
-                                  <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
-                                </g>
-                              </g>
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          Payment successfully completed
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          2 days
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
             </li>
           </ul>
         </div>
       </div>
     </nav>
+
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       <div class="row">
@@ -195,16 +118,16 @@
           <div class="card">
             <div class="card-header p-3 pt-2">
               <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">users</i>
+                <i class="fa fa-users"></i>
               </div>
               <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Users (sheikh)</p>
-                <h4 class="mb-0"><?php echo $ifaida->users_counts();?></h4>
+                <p class="text-sm mb-0 text-capitalize">Users (employee)</p>
+                <h4 class="mb-0"><?php echo $cement->users_counts();?></h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
             <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder"><?php echo $ifaida->users_counts();?></span> all sheikh</p>
+              <p class="mb-0"><span class="text-success text-sm font-weight-bolder"><?php echo $cement->users_counts();?></span> all users</p>
             </div>
           </div>
         </div>
@@ -212,16 +135,16 @@
           <div class="card">
             <div class="card-header p-3 pt-2">
               <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">Darsa</i>
+                <i class="far fa-file-alt"></i>
               </div>
               <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Darsa (lectures)</p>
-                <h4 class="mb-0">0</h4>
+                <p class="text-sm mb-0 text-capitalize">Report</p>
+                <h4 class="mb-0"><?php echo 0;?></h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
             <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">0 </span>all lectures</p>
+              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">0 </span>all report</p>
             </div>
           </div>
         </div>
@@ -229,16 +152,17 @@
           <div class="card">
             <div class="card-header p-3 pt-2">
               <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">views</i>
+                <!-- <i class="far fa-material"></i> -->
+                <i class="fas fa-gem"></i>
               </div>
               <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Views</p>
-                <h4 class="mb-0">0</h4>
+                <p class="text-sm mb-0 text-capitalize">Raw materials</p>
+                <h4 class="mb-0"><?php echo 0;?></h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
             <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">0</span> all views</p>
+              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder"><?php echo 0;?></span> all Raw materials</p>
             </div>
           </div>
         </div>
@@ -246,16 +170,17 @@
           <div class="card">
             <div class="card-header p-3 pt-2">
               <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">Views</i>
+                <!-- <i class="far fa-online-users"></i> -->
+                <i class="fas fa-user-circle"></i>
               </div>
               <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Today's views</p>
-                <h4 class="mb-0">0</h4>
+                <p class="text-sm mb-0 text-capitalize">Online users</p>
+                <h4 class="mb-0"><?php echo $cement->oncline_users_counts();?></h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
             <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">0 </span>all today's views</p>
+              <p class="mb-0"><span class="text-success text-sm font-weight-bolder"><?php echo $cement->oncline_users_counts();?> </span>all online users</p>
             </div>
           </div>
         </div>
@@ -271,12 +196,12 @@
               </div>
             </div>
             <div class="card-body">
-              <h6 class="mb-0 ">Darsa Views/read</h6>
-              <p class="text-sm ">Last Lectures Performance</p>
+              <h6 class="mb-0 ">Weekly report's graph</h6>
+              <p class="text-sm ">Last report Performance</p>
               <hr class="dark horizontal">
               <div class="d-flex ">
-                <i class="material-icons text-sm my-auto me-1">Analysis</i>
-                <p class="mb-0 text-sm"> updated 0 min ago </p>
+                <i class="material-icons text-sm my-auto me-1"></i>
+                <p class="mb-0 text-sm">Analysis updated 0 min ago </p>
               </div>
             </div>
           </div>
@@ -291,12 +216,12 @@
               </div>
             </div>
             <div class="card-body">
-              <h6 class="mb-0 "> Monthly (year views) </h6>
-              <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today's lectures. </p>
+              <h6 class="mb-0 "> Monthly (year records) </h6>
+              <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today's data. </p>
               <hr class="dark horizontal">
               <div class="d-flex">
-                <i class="material-icons text-sm my-auto me-1">analysis</i>
-                <p class="mb-0 text-sm"> updated 0 min ago </p>
+                <i class="material-icons text-sm my-auto me-1"></i>
+                <p class="mb-0 text-sm">Analysis updated 0 min ago </p>
               </div>
             </div>
           </div>
@@ -320,7 +245,7 @@
       data: {
         labels: ["M", "T", "W", "T", "F", "S", "S"],
         datasets: [{
-          label: "Sales",
+          label: "per day",
           tension: 0.4,
           borderWidth: 0,
           borderRadius: 4,
@@ -401,7 +326,7 @@
       data: {
         labels: ["Jan","Feb","Match","Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         datasets: [{
-          label: "Mobile apps",
+          label: "Web apps",
           tension: 0,
           borderWidth: 0,
           pointRadius: 5,
@@ -412,7 +337,7 @@
           borderWidth: 4,
           backgroundColor: "transparent",
           fill: true,
-          data: [200,53,81,50, 40, 300, 320, 500, 950, 200, 230, 500],
+          data: <?php echo "[200,53,81,50, 40, 30, 320, 500, 90, 200, 230, 500],";?>
           maxBarThickness: 6
 
         }],
