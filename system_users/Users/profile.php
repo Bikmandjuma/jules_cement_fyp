@@ -201,7 +201,7 @@
                                 </div>
                                 <div class="modal-body">
                                   <form enctype="multipart/form-data" method="POST">
-                                      <img id="blah" style="width:130px;height:150px;"  src="..\..\assets\img\users\<?php echo $_SESSION['image'];?>"/><br>            
+                                      <img id="blah" style="width:130px;height:150px;"  src="..\..\assets\img\users\<?php echo $user_image;?>"/><br>            
                                       <br>
                                       <input name="fileToUpload" type="file" accept="image/*" id="imgInp" class="form-control" required><br>
                                       <button class="btn btn-info" type="submit" name="SubmitProfilePicture"><i class="fa fa-save"></i> Save change</button>
