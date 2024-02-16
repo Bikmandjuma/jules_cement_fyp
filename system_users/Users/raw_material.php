@@ -257,6 +257,9 @@
                     <tbody>
                       <?php
                           $users_data=mysqli_query($con,"SELECT * from raw_material order by rm_id desc");
+
+                          $users_data_count=mysqli_num_rows($users_data);
+
                           while ($user_row=mysqli_fetch_assoc($users_data)) {
                             $rm_id=$user_row['rm_id'];
                             $name_data=$user_row['name'];
@@ -270,13 +273,13 @@
                                   '.$name_data.'
                                 </td>
                                 <td>
-                                  '.$descr_data.'
-                                </td>
-                                <td class="align-middle text-center text-sm">
                                   '.$qty_data.'
                                 </td>
-                                <td class="align-middle text-center">
+                                <td class="align-middle text-center text-sm">
                                   '.$unit_data.'
+                                </td>
+                                <td class="align-middle text-center">
+                                  '.$descr_data.'
                                 </td>
                                 <td class="align-middle text-center">
                                   ';?>
@@ -287,6 +290,10 @@
                               </tr>
                             ';
 
+                        }
+
+                        if ($users_data_count == 0) {
+                                echo '<tr><td colspan="5" class="text-center">No data found in table !</td></tr>';
                         }
 
                       ?>

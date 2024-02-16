@@ -18,6 +18,12 @@
   <!-- CSS Files -->
   <link id="pagestyle" href="../../assets/css/material-dashboard.css?v=3.0.4" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.css" rel="stylesheet">
+  <style>
+    #eye_id:hover{
+      cursor: pointer;
+      color:red;
+    }
+  </style>
 </head>
 
 <?php
