@@ -30,7 +30,7 @@
             $name=test_input($_POST['name']);
             $description=test_input($_POST['description']);
             $quantity=test_input($_POST['qty']);
-            $unit=test_input(md5($_POST['unit']));
+            $unit=test_input($_POST['unit']);
 
             if (empty($name) || empty($description) || empty($quantity) || empty($unit)) {
                 
@@ -49,9 +49,11 @@
                 $allfieldRequired='<p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;" id="login_fields_required"><b>All fields are required !</b></p><br>';
 
             }else{
-                   $query=mysqli_query($con,"INSERT INTO raw_material values ('','$name','$description','$quantity','$unit')");
 
-                   if ($query == true) {
+                  $query=mysqli_query($con,"INSERT INTO raw_material values ('','$name','$description','$quantity','$unit')");
+
+                  if ($query == true) {
+                      
                       ?>
                         <script>
                           
@@ -59,15 +61,14 @@
                               var required=document.getElementById('account_created');
                               required.style.display="block";
                               required.style.display="none";
-
-                              window.location.href='Sign_in.php';
                           },4000);
 
                         </script>
                       <?php
 
-                     $account_created="<p style='color:teal;text-align:center;' id='account_created'>Account created well</p><br>";
-                   }
+                     $account_created='<p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;" id="account_created"><b>Data inserted successfully !</b></p><br>';
+
+                  }
                 
             }
       }
@@ -214,7 +215,7 @@
                       </div>
                     </div>
                   
-                    <div class="text-center mx-10" style="margin-top:-4px;">
+                    <div class="text-center mx-5" style="margin-top:-4px;">
                         <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="SubmitBtn"><i class="far fa-save"></i> Save</button>
                     </div>
 
@@ -226,6 +227,80 @@
         </div>
         <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4"></div>
       </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div>
+        <div class="col-xl-8 col-sm-6 mb-xl-0 mb-4">
+          
+            <div class="card">
+              <div class="card-header pb-0">
+                <div class="row">
+                  <div class="col-lg-12 col-7 text-center">
+                    <h6>Raw materials data</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body px-0 pb-2">
+                <div class="table-responsive">
+                  <table class="table align-items-center mb-0">
+                    <thead class="text-center">
+                      <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Unit</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                          $users_data=mysqli_query($con,"SELECT * from raw_material order by rm_id desc");
+                          while ($user_row=mysqli_fetch_assoc($users_data)) {
+                            $rm_id=$user_row['rm_id'];
+                            $name_data=$user_row['name'];
+                            $descr_data=$user_row['description'];
+                            $qty_data=$user_row['quantity'];
+                            $unit_data=$user_row['unit'];
+                                  
+                            echo '      
+                              <tr>
+                                <td class="text-center">
+                                  '.$name_data.'
+                                </td>
+                                <td>
+                                  '.$descr_data.'
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                  '.$qty_data.'
+                                </td>
+                                <td class="align-middle text-center">
+                                  '.$unit_data.'
+                                </td>
+                                <td class="align-middle text-center">
+                                  ';?>
+                                  <i class="far fa-eye text-info" id="eye_id" onclick="window.location.href='update_user.php?user_id=<?php echo $rm_id;?>'">&nbsp;View</i>
+                                  <?php
+                                '</td>
+
+                              </tr>
+                            ';
+
+                        }
+
+                      ?>
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+        </div>
+        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div>
+      </div>
+
 
     </div>
       

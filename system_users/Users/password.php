@@ -141,7 +141,7 @@
                         <input type="text" class="form-control" name="email">
                       </div>
                  
-                      <div class="text-center mx-10" style="margin-top:-4px;">
+                      <div class="text-center mx-5" style="margin-top:-4px;">
                         <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="Datas" onclick="submitForm()" ><i class="far fa-save"></i> Save</button>
                       </div>
 
