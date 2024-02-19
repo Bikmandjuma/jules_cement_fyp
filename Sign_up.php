@@ -146,8 +146,8 @@
       <span class="mask bg-gradient-dark opacity-6"></span>
       <div class="container my-auto">
 
-        <div class="row mt-6">
-          <div class="col-lg-4 col-md-8 col-12 mx-auto">
+        <div class="row mt-7">
+          <div class="col-lg-6 col-md-8 col-12 mx-auto">
             <div class="card z-index-0 fadeIn3 fadeInBottom">
               <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2">
                 <div class="bg-gradient-info shadow-primary border-radius-lg py-3 pe-1">
@@ -159,30 +159,53 @@
                 <?php echo $allfieldRequired.$email_diplicated.$phone_diplicated.$account_created.$pswd_do_not_match.$pswd_length;?>
 
                 <form role="form" class="text-start loginForm" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
-                  <div class="input-group input-group-outline my-3">
-                    <label class="form-label">Name</label>
-                    <input type="text" class="form-control" name="name">
+
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-6 mx-auto">
+                      <div class="input-group input-group-outline my-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name">
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-6 mx-auto">
+                      <div class="input-group input-group-outline mb-3 mt-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" class="form-control" name="phone">
+                      </div>
+                    </div>
                   </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Phone</label>
-                    <input type="text" class="form-control" name="phone">
+
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-6 mx-auto">
+                      <div class="input-group input-group-outline my-3">
+                        <label class="form-label">Email</label>
+                        <input type="text" class="form-control" name="email">
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-6 mx-auto">
+                      <div class="input-group input-group-outline mb-3 mt-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password">
+                      </div>
+                    </div>
                   </div>
-                  <div class="input-group input-group-outline my-3">
-                    <label class="form-label">Email</label>
-                    <input type="text" class="form-control" name="email">
+
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-6 mx-auto">
+                        <div class="input-group input-group-outline my-3">
+                          <label class="form-label">repeat-password</label>
+                          <input type="password" class="form-control" name="repeat-password">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-6 mx-auto">
+                      <div class="text-center mx-4" style="margin-top:-12px;">
+                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2 shadow-danger" name="Datas" onclick="submitForm()" >Sign up</button>
+                      </div>
+                    </div>
                   </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password">
-                  </div>
-                  <div class="input-group input-group-outline my-3">
-                    <label class="form-label">repeat-password</label>
-                    <input type="password" class="form-control" name="repeat-password">
-                  </div>
+
                   
-                  <div class="text-center mx-4">
-                    <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="Datas" onclick="submitForm()" >Sign up</button>
-                  </div>
+                  
 
                   <p class="mt-4 text-sm text-center">
                     Already have an account&nbsp;<a href="#" onclick="window.location.href='Sign_in.php'" class="text-info text-gradient font-weight-bold">Sign in</a>

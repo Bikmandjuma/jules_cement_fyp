@@ -188,7 +188,7 @@ while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
                         </div>
 
                         <!--start modal of image-->
-                          <div class="modal fade text-center" style="margin-top:150px;" id="ImageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                          <div class="modal fade text-center" style="margin-top:50px;" id="ImageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header text-center">

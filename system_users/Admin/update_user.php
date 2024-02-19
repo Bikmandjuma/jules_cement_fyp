@@ -65,11 +65,6 @@
         return $data;
     }
 
-
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

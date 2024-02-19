@@ -151,7 +151,7 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="#" target="_blank">
-        <img src="../../assets/img/admin/<?php echo $admin_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
+        <img src="../../assets/img/admin/<?php echo $admin_image;?>" title="user image" style="width:40px;height:45px;border-radius:20%;" class="navbar-brand-img img-circle" alt="main_logo">
         <span class="ms-1 font-weight-bold text-white"><?php echo $_SESSION['name'];?></span>
       </a>
     </div>
@@ -322,6 +322,8 @@
                     <tbody>
                       <?php
                           $users_data=mysqli_query($con,"SELECT * from users order by u_id desc");
+                          $count_users=mysqli_num_rows($users_data);
+
                           while ($user_row=mysqli_fetch_assoc($users_data)) {
                             $user_id=$user_row['u_id'];
                             $name_data=$user_row['name'];
@@ -334,7 +336,7 @@
                                 <td class="text-center">
                                   <div class="text-center">
                                     <div class="justify-content-center">
-                                      <img src="..\..\assets\img\users\user.png" style="border:1px solid black;" class="avatar avatar-sm me-3" alt="atlassian">
+                                      <img src="..\..\assets\img\users\user.png" style="border:1px solid skyblue;" class="avatar avatar-sm me-3" alt="atlassian">
                                     </div>
                                   </div>
                                 </td>
@@ -349,7 +351,7 @@
                                 </td>
                                 <td class="align-middle text-center">
                                   ';?>
-                                  <i class="far fa-eye text-info" id="eye_id" onclick="window.location.href='update_user.php?user_id=<?php echo $user_id;?>'">&nbsp;View</i>
+                                  <i class="far fa-edit text-info" id="eye_id" onclick="window.location.href='update_user.php?user_id=<?php echo $user_id;?>'" title="update <?php echo $name_data;?>'s data"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-trash text-danger" id="eye_id" onclick="deletefn('<?php echo $user_id;?>')" title="delete <?php echo $name_data;?>'s data"></i>
                                   <?php
                                 '</td>
 
@@ -357,6 +359,11 @@
                             ';
 
                         }
+
+                        if ($count_users == 0) {
+                            echo '<tr><td class="text-center" colspan="5">No user\'s data found !</td></tr>';
+                        }
+                        
 
                       ?>
                       
@@ -374,6 +381,18 @@
     </div>
       
   </main>
+
+  <script type="text/javascript">
+      function deletefn(user_id) {
+          var confiramtion=confirm("Are you sure you want to delete this user?");
+          if (confiramtion) {
+              window.location.href='delete_user.php?user_id='+user_id+'';  
+          }
+
+          return confiramtion;
+          
+      }
+  </script>
   
   <!--   Core JS Files   -->
   <script src="../../assets/js/core/popper.min.js"></script>
