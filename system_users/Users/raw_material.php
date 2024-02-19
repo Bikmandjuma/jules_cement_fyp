@@ -203,8 +203,8 @@
                     <div class="row">
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                         <div class="input-group input-group-outline mt-4">
-                          <label class="form-label">Description</label>
-                          <textarea type="text" class="form-control" name="description"></textarea>
+                          <!-- <label class="form-label">Description</label> -->
+                          <textarea type="text" class="form-control" name="description" placeholder="description"></textarea>
                         </div>
                       </div>
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
@@ -244,7 +244,7 @@
               </div>
               <div class="card-body px-0 pb-2">
                 <div class="table-responsive">
-                  <table class="table align-items-center mb-0">
+                  <table class="table align-items-center mb-0 text-center">
                     <thead class="text-center">
                       <tr>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
@@ -283,7 +283,8 @@
                                 </td>
                                 <td class="align-middle text-center">
                                   ';?>
-                                  <i class="far fa-eye text-info" id="eye_id" onclick="window.location.href='update_raw_material.php?user_id=<?php echo $rm_id;?>'">&nbsp;View</i>
+                                  <i class="far fa-edit text-info" id="eye_id" onclick="window.location.href='update_raw_material.php?raw_material_id=<?php echo $rm_id;?>'"></i>&nbsp;&nbsp;&nbsp;
+                                  <i class="fa fa-trash text-danger" id="eye_id" onclick="deletefn('<?php echo $rm_id;?>')"></i>
                                   <?php
                                 '</td>
 
@@ -312,6 +313,19 @@
     </div>
       
   </main>
+
+  <script type="text/javascript">
+
+    function deletefn(raw_material_id){
+        var confirmation=confirm("are you sure you want to delete this raw material's data ?");
+        if (confirmation) {
+            window.location.href='delete_raw_material.php?raw_material_id='+raw_material_id+'';
+        }
+
+        return confirmation;
+    }
+
+  </script>
   
   <!--   Core JS Files   -->
   <script src="../../assets/js/core/popper.min.js"></script>

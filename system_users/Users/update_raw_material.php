@@ -21,39 +21,40 @@
       $user_image=$row_user_info['image'];
     }
 
-    $users_id=$_REQUEST['user_id'];
+    $raw_material_id=$_REQUEST['raw_material_id'];
 
-    $users_data=mysqli_query($con,"SELECT * from users where u_id=$users_id");
-    while ($user_row=mysqli_fetch_assoc($users_data)) {
-        $name_data=$user_row['name'];
-        $phone_data=$user_row['phone'];
-        $email_data=$user_row['email'];
-        $image_data=$user_row['image'];
+    $raw_material_data=mysqli_query($con,"SELECT * FROM raw_material WHERE rm_id=$raw_material_id");
+    while ($raw_material_row=mysqli_fetch_assoc($raw_material_data)) {
+        $name_data=$raw_material_row['name'];
+        $description_data=$raw_material_row['description'];
+        $quantity_data=$raw_material_row['quantity'];
+        $unit_data=$raw_material_row['unit'];
     }
 
-    $user_info_changed=null;
+    $raw_info_changed=null;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-      if (isset($_POST['update_user_info'])) {
+      if (isset($_POST['update_raw_info'])) {
         
           $name=test_input($_POST['name']);
-          $phone=test_input($_POST['phone']);
-          $email=test_input($_POST['email']);
+          $description=test_input($_POST['description']);
+          $quantity=test_input($_POST['quantity']);
+          $unit=test_input($_POST['unit']);
 
-          $sql_password="UPDATE users SET name='".$name."',phone='".$phone."',email='".$email."' where u_id='".$users_id."'";
-          $result_password=mysqli_query($con,$sql_password);
-          if ($result_password == true) {
-              $user_info_changed='<p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;" id="user_info">user info changed successfully !</p><br>';
+          $sql_raw="UPDATE raw_material SET name='".$name."',description='".$description."',quantity='".$quantity."',unit='".$unit."' where rm_id='".$raw_material_id."'";
+          $result_raw=mysqli_query($con,$sql_raw);
+          if ($result_raw == true) {
+              $raw_info_changed='<p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;" id="raw_info">Data updated successfully !</p><br>';
                ?>
                     <script>
                       
                       setTimeout(function(){
-                          var required=document.getElementById('user_info');
+                          var required=document.getElementById('raw_info');
                           required.style.display="block";
                           required.style.display="none";
 
-                          window.location.href='users.php'
+                          window.location.href='raw_material.php'
 
                       },4000);
 
@@ -156,7 +157,7 @@
       <div class="row">
         <div class="col-xl-4 col-sm-4"></div>
         <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
-            
+            <?php echo $raw_info_changed;?>
             <div class="card z-index-0 fadeIn3 fadeInBottom">
               
               <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2">
@@ -168,18 +169,18 @@
               <div class="card-body">
 
                 <form role="form" class="text-start" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
-
+                    <input type="hidden" name="raw_material_id" value="<?php echo htmlspecialchars($raw_material_id); ?>">
                     <div class="row">
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                         <div class="input-group input-group-outline">
-                          <label class="form-label">Name</label>
-                          <input type="text" class="form-control" name="name" value="<?php echo 'Cool'?>">
+                          <!-- <label class="form-label">Name</label> -->
+                          <input type="text" class="form-control" name="name" value="<?php echo $name_data;?>" placeholder="Name">
                         </div>
                       </div>
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                         <div class="input-group input-group-outline">
-                          <label class="form-label">Quantity</label>
-                          <input type="text" class="form-control" name="qty">
+                          <!-- <label class="form-label">Quantity</label> -->
+                          <input type="text" class="form-control" name="quantity" placeholder="Unit" value="<?php echo $quantity_data;?>">
                         </div>  
                       </div>
                     </div>
@@ -187,20 +188,20 @@
                     <div class="row">
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                         <div class="input-group input-group-outline mt-4">
-                          <label class="form-label">Description</label>
-                          <textarea type="text" class="form-control" name="description"></textarea>
+                          <!-- <label class="form-label">Description</label> -->
+                          <textarea type="text" class="form-control" name="description" placeholder="Description"><?php echo $description_data;?></textarea>
                         </div>
                       </div>
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                         <div class="input-group input-group-outline mt-4">
-                          <label class="form-label">Unit</label>
-                          <input type="text" class="form-control" name="unit">
+                          <!-- <label class="form-label">Unit</label> -->
+                          <input type="text" class="form-control" name="unit" placeholder="Unit" value="<?php echo $unit_data;?>">
                         </div>
                       </div>
                     </div>
                   
                     <div class="text-center mx-5" style="margin-top:-4px;">
-                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="SubmitBtn"><i class="far fa-save"></i> Save changes</button>
+                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="update_raw_info"><i class="far fa-save"></i> Save changes</button>
                     </div>
 
                 </form>
