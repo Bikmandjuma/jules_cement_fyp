@@ -20,6 +20,69 @@
     while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
       $user_image=$row_user_info['image'];
     }
+
+                      
+    $all_fields_required=$current_password=$new_password=$confirm_new_password=$password_required=$current_password_incorrect=$password_mustbe_greaterthan_8=$new_password_do_not_match=$Password_changed_well=$user_new_pswd=null;
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      
+      if (isset($_POST['Password_changed'])) {
+            $current_password=test_input($_POST['password']);
+            $new_password=test_input($_POST['new_password']);
+            $confirm_new_password=test_input($_POST['repeat_new_password']);
+
+            $sql="SELECT password from users where u_id='".$_SESSION['u_id']."'";
+            $result=mysqli_query($con,$sql);
+            while ($row=mysqli_fetch_assoc($result)) {
+                $user_password=$row['password'];
+            }
+
+            if (empty($current_password) || empty($new_password) || empty($new_password)) {
+                $all_fields_required='
+                    <p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;">All fields are required !</p><br>';
+
+            }else{
+                if (md5($current_password) != $user_password) {
+                    $current_password_incorrect='
+                      <p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;">Incorrect current password !</p><br>';
+
+                }elseif (strlen($new_password) < 8) {
+                    $password_mustbe_greaterthan_8='
+                        <p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;">New password must be at least 8 characters !</p><br>';
+
+                }elseif (md5($new_password) != md5($confirm_new_password)) {
+                    $new_password_do_not_match='
+                         <p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;">New password do not match !</p><br>';
+
+                }else{ 
+                    $user_new_pswd=md5($new_password);
+                    if ($new_password == $confirm_new_password) {
+                        $sql_password="UPDATE users SET password='".$user_new_pswd."' where u_id='".$_SESSION['u_id']."'";
+                        $result_password=mysqli_query($con,$sql_password);
+                        if ($result_password == true) {
+                            $Password_changed_well='
+                               <p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;">Password changed successfully !</p><br>';
+
+                        }
+
+                    }
+
+
+                }
+
+
+            }
+      }     
+
+  }
+
+  function test_input($data){
+      $data=trim($data);
+      $data=stripslashes($data);
+      $data=htmlspecialchars($data);
+      return $data;
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -114,6 +177,12 @@
       <div class="row">
         <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4"></div>
         <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
+
+            <?php echo $Password_changed_well;?>
+            <?php echo $all_fields_required;?>
+            <?php echo $current_password_incorrect;?>
+            <?php echo $new_password_do_not_match;?>
+            <?php echo $password_mustbe_greaterthan_8;?>
             
             <div class="card z-index-0 fadeIn3 fadeInBottom">
               <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2">
@@ -128,21 +197,21 @@
                   
                       <div class="input-group input-group-outline">
                         <label class="form-label">Current password</label>
-                        <input type="text" class="form-control" name="name">
+                        <input type="text" class="form-control" name="password">
                       </div>
                     
                       <div class="input-group input-group-outline mt-4">
                         <label class="form-label">new password</label>
-                        <input type="text" class="form-control" name="phone">
+                        <input type="text" class="form-control" name="new_password">
                       </div>
                     
                       <div class="input-group input-group-outline mt-4">
                         <label class="form-label">confirm new password</label>
-                        <input type="text" class="form-control" name="email">
+                        <input type="text" class="form-control" name="repeat_new_password">
                       </div>
                  
                       <div class="text-center mx-5" style="margin-top:-4px;">
-                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="Datas" onclick="submitForm()" ><i class="far fa-save"></i> Save</button>
+                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="Password_changed"><i class="far fa-save"></i> Save</button>
                       </div>
 
                 </form>
