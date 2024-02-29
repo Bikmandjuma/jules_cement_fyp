@@ -298,7 +298,7 @@
                 <div class="row">
                   <div class="col-lg-12 col-7 text-center">
                     <h6>Report data</h6>
-                    <button class="btn btn-success" style="float:right;margin-top: -30px;">Generate report</button>
+                    <button class="btn btn-success" onclick="generatereportfn()" style="float:right;margin-top: -30px;">Generate report</button>
                   </div>
                 </div>
               </div>
@@ -310,8 +310,9 @@
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">N<sup>o</sup></th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">name</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quantity_stored</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quantity_consumed</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Qty_stored</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Qty_consumed</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Qty_left_in_store</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Time_ago</th>
                       </tr>
                     </thead>
@@ -373,6 +374,9 @@
                                 <td class="align-middle text-center">
                                   '.$quantity_consumed.$report_unit.'
                                 </td>
+                                <td class="align-middle text-center text-info">
+                                  '.$quantity_stored-$quantity_consumed.$report_unit.'
+                                </td>
                                 
                                 <td class="align-middle text-center">
                                   '.$timeAgo.'
@@ -384,7 +388,7 @@
                         }
 
                         if ($report_data_count == 0) {
-                                echo '<tr><td colspan="6" class="text-center">No report\'s data found in table !</td></tr>';
+                                echo '<tr><td colspan="7" class="text-center">No report\'s data found in table !</td></tr>';
                         }
 
                       ?>
@@ -401,6 +405,44 @@
       </div>
       
   </main>
+
+  <script type="text/javascript">
+    function generatereportfn(){
+        <?php
+            
+            // Fetch data from the database
+            $sql_gener_report = mysqli_query($con,"SELECT * from raw_material where quantity_consumed != 0 and raw_material.user_fk_id=".$users_id." "); // Adjust the column names and table name as needed
+
+            // Generate Excel file content
+            $excel_data = "Name\tQty_stored\tQty_consumed\tQty_left\tDescription\tReport_time\n"; // Header row
+            
+            while($row_gener_report =mysqli_fetch_assoc($sql_gener_report) ) {
+
+                $qty_left_gen=$row_gener_report['quantity_stored']-$row_gener_report['quantity_consumed'];
+                $gen_qty_stored=$row_gener_report['quantity_stored'].$row_gener_report['unit'];
+                $gen_qty_consumed=$row_gener_report['quantity_consumed'].$row_gener_report['unit'];
+                $gen_name=$row_gener_report['name'];
+                $gen_descr=$row_gener_report['consumed_descr'];
+                $gen_consumed_time=$row_gener_report['consumed_time'];
+
+                // Format data as needed
+                $excel_data .= $gen_name . "\t" . $gen_qty_stored . "\t" . $gen_qty_consumed . "\t" . $qty_left_gen.$row_gener_report['unit']. "\t".$gen_descr. "\t".$gen_consumed_time."\n";
+            }
+          
+
+            // Send headers for Excel file download
+            header("Content-type: application/vnd.ms-excel");
+            header("Content-Disposition: attachment; filename=report.csv");
+
+            // Output Excel data
+            echo $excel_data;
+
+            // Close connection
+            // $conn->close();
+        ?>
+
+    }
+  </script>
   
   <!--   Core JS Files   -->
   <script src="../../assets/js/core/popper.min.js"></script>

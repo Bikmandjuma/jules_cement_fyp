@@ -91,7 +91,7 @@
                             </script>
                           <?php
 
-                         $Name_exist='<p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;" id="name_exist">This name <strong>('.$name.')</strong> is already exist , just update !</p><br>';
+                         $Name_exist='<p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;" id="name_exist">This name <strong>('.$name.')</strong> is already exist , just update it !</p><br>';
 
                   }
                 
