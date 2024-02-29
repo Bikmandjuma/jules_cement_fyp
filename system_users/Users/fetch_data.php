@@ -5,7 +5,7 @@
 
   // Fetch analytical data from the database
   // $sql = "SELECT metric, value FROM analytics_data";
-  $sql="SELECT raw_material.name as metric,raw_material.quantity as value from report inner join raw_material on raw_material.rm_id=report.rm_fk_id";
+  $sql="SELECT raw_material.name as metric,raw_material.quantity_stored as value from report inner join raw_material on raw_material.rm_id=report.rm_fk_id";
 
   $result = $con->query($sql);
 

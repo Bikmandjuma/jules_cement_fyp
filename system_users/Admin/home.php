@@ -20,6 +20,37 @@
     while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
       $admin_image=$row_user_info['image'];
     }
+
+    //fetch time ago of consumation
+    $time_cons_sql=mysqli_query($con,"SELECT * from raw_material where consumed_time is not NULL");
+    while ($row_time_Cons=mysqli_fetch_assoc($time_cons_sql)) {
+        $time_ago=$row_time_Cons['consumed_time'];
+    }
+
+    // Your timestamp or date string
+    $timestamp = $time_ago;
+
+    // Create DateTime objects for the current time and the timestamp
+    $currentDateTime = new DateTime();
+    $timestampDateTime = new DateTime($timestamp);
+
+    // Calculate the difference
+    $difference = $currentDateTime->diff($timestampDateTime);
+
+    // Format the difference as "X time ago"
+    if ($difference->y > 0) {
+        $timeAgo = $difference->y . ' year' . ($difference->y > 1 ? 's' : '') . ' ago';
+    } elseif ($difference->m > 0) {
+        $timeAgo = $difference->m . ' month' . ($difference->m > 1 ? 's' : '') . ' ago';
+    } elseif ($difference->d > 0) {
+        $timeAgo = $difference->d . ' day' . ($difference->d > 1 ? 's' : '') . ' ago';
+    } elseif ($difference->h > 0) {
+        $timeAgo = $difference->h . ' hour' . ($difference->h > 1 ? 's' : '') . ' ago';
+    } elseif ($difference->i > 0) {
+        $timeAgo = $difference->i . ' minute' . ($difference->i > 1 ? 's' : '') . ' ago';
+    } else {
+        $timeAgo = 'just now';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -203,7 +234,7 @@
               <hr class="dark horizontal">
               <div class="d-flex">
                 <i class="material-icons text-sm my-auto me-1"></i>
-                <p class="mb-0 text-sm">Analytic chart updated 0 min ago </p>
+                <p class="mb-0 text-sm">Analytic chart updated <b><?php echo $timeAgo;?></b> !</p>
               </div>
             </div>
           </div>
