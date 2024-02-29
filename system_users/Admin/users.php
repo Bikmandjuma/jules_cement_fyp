@@ -336,7 +336,7 @@
                                 <td class="text-center">
                                   <div class="text-center">
                                     <div class="justify-content-center">
-                                      <img src="..\..\assets\img\users\user.png" style="border:1px solid skyblue;" class="avatar avatar-sm me-3" alt="atlassian">
+                                      <img src="../../assets/img/users/'.$image_data.'" style="border:1px solid skyblue;" class="avatar avatar-sm me-3" alt="atlassian">
                                     </div>
                                   </div>
                                 </td>

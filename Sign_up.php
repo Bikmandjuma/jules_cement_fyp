@@ -149,9 +149,9 @@
         <div class="row mt-7">
           <div class="col-lg-6 col-md-8 col-12 mx-auto">
             <div class="card z-index-0 fadeIn3 fadeInBottom">
-              <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2">
+              <div class="card-header p-0 position-relative mt-n4  z-index-2">
                 <div class="bg-gradient-info shadow-primary border-radius-lg py-3 pe-1">
-                  <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Register</h4>
+                  <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Register form</h4>
                 </div>
               </div>
 
@@ -199,7 +199,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-6 mx-auto">
                       <div class="text-center mx-4" style="margin-top:-12px;">
-                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2 shadow-danger" name="Datas" onclick="submitForm()" >Sign up</button>
+                        <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2 shadow-danger" name="Datas" onclick="submitForm()" >Register</button>
                       </div>
                     </div>
                   </div>

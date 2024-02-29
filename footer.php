@@ -8,7 +8,7 @@
                   document.write(new Date().getFullYear())
                 </script>,
                 made by <i class="fa fa-heart" aria-hidden="true"></i>
-                <a href="#" class="text-white font-weight-bolder" style="font-family: sans-serif;font-style: italic;">Ifaida</a>
+                <a href="#" class="text-white font-weight-bolder" style="font-family: sans-serif;font-style: italic;">Cement</a>
               </div>
             </div>
             

@@ -139,12 +139,12 @@
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">Report</p>
-                <h4 class="mb-0"><?php echo 0;?></h4>
+                <h4 class="mb-0"><?php echo $cement->report_count_on_admin();?></h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
             <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">0 </span>all report</p>
+              <p class="mb-0"><span class="text-success text-sm font-weight-bolder"><?php echo $cement->report_count_on_admin();?> </span>all report</p>
             </div>
           </div>
         </div>
@@ -157,12 +157,12 @@
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">Raw materials</p>
-                <h4 class="mb-0"><?php echo 0;?></h4>
+                <h4 class="mb-0"><?php echo $cement->raw_materials_count();?></h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
             <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder"><?php echo 0;?></span> all Raw materials</p>
+              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder"><?php echo $cement->raw_materials_count();?></span> all Raw materials</p>
             </div>
           </div>
         </div>
@@ -186,42 +186,24 @@
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col-lg-4 col-md-6 mt-4 mb-4">
-          <div class="card z-index-2 ">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-              <div class="bg-gradient-info shadow-primary border-radius-lg py-3 pe-1">
-                <div class="chart">
-                  <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <h6 class="mb-0 ">Weekly report's graph</h6>
-              <p class="text-sm ">Last report Performance</p>
-              <hr class="dark horizontal">
-              <div class="d-flex ">
-                <i class="material-icons text-sm my-auto me-1"></i>
-                <p class="mb-0 text-sm">Analysis updated 0 min ago </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-8 col-md-12 mt-4 mb-4">
+        
+        <div class="col-lg-12 col-md-12 mt-1 mb-4">
           <div class="card z-index-2  ">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-              <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
+            <div class="card-header p-0 position-relative mt-n1 mx-3 z-index-2 bg-transparent">
+              <div class="shadow-success border-radius-lg py-3 pe-1">
                 <div class="chart">
-                  <canvas id="chart-line" class="chart-canvas" height="170"></canvas>
+                  <!-- <canvas id="chart-line" class="chart-canvas" height="170"></canvas> -->
+                  <canvas id="rawMaterialsChart" width="800" height="170"></canvas>
                 </div>
               </div>
             </div>
             <div class="card-body">
-              <h6 class="mb-0 "> Monthly (year records) </h6>
-              <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today's data. </p>
+              <h6 class="mb-0 ">analytics of stored and consumed Raw materials </h6>
+              <p class="text-sm "><span class="font-weight-bolder">Stored data is in sky blue while consumed data is in pink</span></p>
               <hr class="dark horizontal">
               <div class="d-flex">
                 <i class="material-icons text-sm my-auto me-1"></i>
-                <p class="mb-0 text-sm">Analysis updated 0 min ago </p>
+                <p class="mb-0 text-sm">Analytic chart updated 0 min ago </p>
               </div>
             </div>
           </div>
@@ -230,6 +212,58 @@
       </div>
       
   </main>
+    
+    <script>
+        // Fetch data from fetch_data.php using AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'fetch_analytic_data.php', true);
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                // Parse JSON response
+                var data = JSON.parse(xhr.responseText);
+
+                // Extract names and quantities
+                var names = Object.keys(data);
+                var quantities = Object.values(data).map(function(item) { return item.quantity; });
+                var consumed = Object.values(data).map(function(item) { return item.consumed; });
+
+                // Create chart data
+                var ctx = document.getElementById('rawMaterialsChart').getContext('2d');
+                var rawMaterialsChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: names,
+                        datasets: [
+                            {
+                                label: 'Stored',
+                                data: quantities,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Consumed',
+                                data: consumed,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        };
+        xhr.send();
+    </script>
   
   <!--   Core JS Files   -->
   <script src="../../assets/js/core/popper.min.js"></script>
@@ -237,172 +271,8 @@
   <script src="../../assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="../../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="../../assets/js/plugins/chartjs.min.js"></script>
-  <script>
-    var ctx = document.getElementById("chart-bars").getContext("2d");
-
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["M", "T", "W", "T", "F", "S", "S"],
-        datasets: [{
-          label: "per day",
-          tension: 0.4,
-          borderWidth: 0,
-          borderRadius: 4,
-          borderSkipped: false,
-          backgroundColor: "rgba(255, 255, 255, .8)",
-          data: [50, 20, 10, 22, 50, 10, 40],
-          maxBarThickness: 6
-        }, ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: 500,
-              beginAtZero: true,
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-              color: "#fff"
-            },
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
-
-
-    var ctx2 = document.getElementById("chart-line").getContext("2d");
-
-    new Chart(ctx2, {
-      type: "line",
-      data: {
-        labels: ["Jan","Feb","Match","Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-          label: "Web apps",
-          tension: 0,
-          borderWidth: 0,
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(255, 255, 255, .8)",
-          pointBorderColor: "transparent",
-          borderColor: "rgba(255, 255, 255, .8)",
-          borderColor: "rgba(255, 255, 255, .8)",
-          borderWidth: 4,
-          backgroundColor: "transparent",
-          fill: true,
-          data: <?php echo "[200,53,81,50, 40, 30, 320, 500, 90, 200, 230, 500],";?>
-          maxBarThickness: 6
-
-        }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              borderDash: [5, 5]
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
-
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {

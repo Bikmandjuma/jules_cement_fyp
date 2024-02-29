@@ -14,9 +14,7 @@
     
     $cement=new Cement;
 
-
     $users_id=$_SESSION['u_id'];
-
     $image_uploaded=$image_size=$image_type=$image_not_uploaded=$Error_to_uploaded=$File_not_image=null;
     if (isset($_POST['SubmitProfilePicture'])) {
       

@@ -27,7 +27,7 @@
     while ($raw_material_row=mysqli_fetch_assoc($raw_material_data)) {
         $name_data=$raw_material_row['name'];
         $description_data=$raw_material_row['description'];
-        $quantity_data=$raw_material_row['quantity'];
+        $quantity_data=$raw_material_row['quantity_stored'];
         $unit_data=$raw_material_row['unit'];
     }
 
@@ -42,7 +42,7 @@
           $quantity=test_input($_POST['quantity']);
           $unit=test_input($_POST['unit']);
 
-          $sql_raw="UPDATE raw_material SET name='".$name."',description='".$description."',quantity='".$quantity."',unit='".$unit."' where rm_id='".$raw_material_id."'";
+          $sql_raw="UPDATE raw_material SET name='".$name."',description='".$description."',quantity_stored='".$quantity."',unit='".$unit."' where rm_id='".$raw_material_id."'";
           $result_raw=mysqli_query($con,$sql_raw);
           if ($result_raw == true) {
               $raw_info_changed='<p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;" id="raw_info">Data updated successfully !</p><br>';

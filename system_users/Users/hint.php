@@ -84,12 +84,7 @@
           <h6 class="font-weight-bolder mb-0">Dashboard</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-          <!-- <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <div class="input-group input-group-outline">
-              <label class="form-label">Type here...</label>
-              <input type="text" class="form-control">
-            </div>
-          </div> -->
+
           <?php
             require 'search.php';
           ?>
@@ -147,24 +142,24 @@
 
 <?php
 
-// Include the database connection file
-include 'db_connection.php';
+  // Include the database connection file
+  include 'db_connection.php';
 
-// Fetch analytical data from the database
-$sql = "SELECT metric, value FROM analytics_data";
-$result = $conn->query($sql);
+  // Fetch analytical data from the database
+  $sql = "SELECT metric, value FROM analytics_data";
+  $result = $conn->query($sql);
 
-// Prepare data for JSON encoding
-$data = array();
-while ($row = $result->fetch_assoc()) {
-    $data[$row['metric']][] = $row['value'];
-}
+  // Prepare data for JSON encoding 
+  $data = array();
+  while ($row = $result->fetch_assoc()) {
+      $data[$row['metric']][] = $row['value'];
+  }
 
-// Convert data to JSON format
-echo json_encode($data);
+  // Convert data to JSON format
+  echo json_encode($data);
 
-// Close the database connection
-$conn->close();
+  // Close the database connection
+  $conn->close();
 
 ?>
 
@@ -243,4 +238,33 @@ if ($conn->connect_error) {
 
 ?>
 
+//displaying last time ago
+<?php
+// Your timestamp or date string
+$timestamp = '2024-02-23 10:15:30';
+
+// Create DateTime objects for the current time and the timestamp
+$currentDateTime = new DateTime();
+$timestampDateTime = new DateTime($timestamp);
+
+// Calculate the difference
+$difference = $currentDateTime->diff($timestampDateTime);
+
+// Format the difference as "X time ago"
+if ($difference->y > 0) {
+    $timeAgo = $difference->y . ' year' . ($difference->y > 1 ? 's' : '') . ' ago';
+} elseif ($difference->m > 0) {
+    $timeAgo = $difference->m . ' month' . ($difference->m > 1 ? 's' : '') . ' ago';
+} elseif ($difference->d > 0) {
+    $timeAgo = $difference->d . ' day' . ($difference->d > 1 ? 's' : '') . ' ago';
+} elseif ($difference->h > 0) {
+    $timeAgo = $difference->h . ' hour' . ($difference->h > 1 ? 's' : '') . ' ago';
+} elseif ($difference->i > 0) {
+    $timeAgo = $difference->i . ' minute' . ($difference->i > 1 ? 's' : '') . ' ago';
+} else {
+    $timeAgo = 'just now';
+}
+
+echo $timeAgo;
+?>
 

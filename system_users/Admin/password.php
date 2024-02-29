@@ -1,6 +1,5 @@
 <?php
     session_start();
-    
     if (!isset($_SESSION['email'])) {
       ?>
         <script type="text/javascript">
@@ -13,13 +12,75 @@
     include_once '../../php_code/codes.php';
     $cement=new Cement;
 
-$user_id=$_SESSION['a_id'];
+    $user_id=$_SESSION['a_id'];
 
-$sql_user_info="SELECT * FROM admin where a_id=".$user_id."";
-$query_user_info=mysqli_query($con,$sql_user_info);
-while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
-  $admin_image=$row_user_info['image'];
-}
+    $sql_user_info="SELECT * FROM admin where a_id=".$user_id."";
+    $query_user_info=mysqli_query($con,$sql_user_info);
+    while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
+      $admin_image=$row_user_info['image'];
+      $admin_name=$row_user_info['name'];
+    }
+  
+    $all_fields_required=$current_password=$new_password=$confirm_new_password=$password_required=$current_password_incorrect=$password_mustbe_greaterthan_8=$new_password_do_not_match=$Password_changed_well=$user_new_pswd=null;
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        
+        if (isset($_POST['Password_changed'])) {
+              $current_password=test_input($_POST['password']);
+              $new_password=test_input($_POST['new_password']);
+              $confirm_new_password=test_input($_POST['repeat_new_password']);
+
+              $sql="SELECT password from admin where a_id='".$user_id."'";
+              $result=mysqli_query($con,$sql);
+              while ($row=mysqli_fetch_assoc($result)) {
+                  $user_password=$row['password'];
+              }
+
+              if (empty($current_password) || empty($new_password) || empty($new_password)) {
+                  $all_fields_required='
+                      <p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;">All fields are required !</p><br>';
+
+              }else{
+                  if (md5($current_password) != $user_password) {
+                      $current_password_incorrect='
+                        <p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;">Incorrect current password !</p><br>';
+
+                  }elseif (strlen($new_password) < 8) {
+                      $password_mustbe_greaterthan_8='
+                          <p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;">New password must be at least 8 characters !</p><br>';
+
+                  }elseif (md5($new_password) != md5($confirm_new_password)) {
+                      $new_password_do_not_match='
+                           <p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;">New password do not match !</p><br>';
+
+                  }else{ 
+                      $user_new_pswd=md5($new_password);
+                      if ($new_password == $confirm_new_password) {
+                          $sql_password="UPDATE admin SET password='".$user_new_pswd."' where a_id='".$user_id."'";
+                          $result_password=mysqli_query($con,$sql_password);
+                          if ($result_password == true) {
+                              $Password_changed_well='
+                                 <p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;">Password changed successfully !</p><br>';
+
+                          }
+
+                      }
+
+
+                  }
+
+
+              }
+        }     
+
+    }
+
+    function test_input($data){
+        $data=trim($data);
+        $data=stripslashes($data);
+        $data=htmlspecialchars($data);
+        return $data;
+    }
 
 ?>
 <!DOCTYPE html>
@@ -33,7 +94,7 @@ while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="#" target="_blank">
         <img src="../../assets/img/admin/<?php echo $admin_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white"><?php echo $_SESSION['name'];?></span>
+        <span class="ms-1 font-weight-bold text-white"><?php echo $admin_name;?></span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -50,17 +111,13 @@ while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
     
         <li class="nav-item">
           <a class="nav-link text-white" href="#" onclick="window.location.href='users.php'">
-            <!-- <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons">users</i>
-            </div> -->
+          
             <span class="nav-link-text ms-1"><i class="fas fa-users"></i>&nbsp;&nbsp;Users</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="#" onclick="window.location.href='report.php'">
-            <!-- <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">report</i>
-            </div> -->
+            
             <span class="nav-link-text ms-1"> <i class="far fa-file-alt"></i>&nbsp;&nbsp;Reports</span>
           </a>
         </li>
@@ -110,6 +167,7 @@ while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
       <div class="row">
         <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4"></div>
         <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
+            <?php echo $Password_changed_well.$all_fields_required.$current_password_incorrect.$new_password_do_not_match.$password_mustbe_greaterthan_8;?>
             
             <div class="card z-index-0 fadeIn3 fadeInBottom">
               <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2">
@@ -124,24 +182,23 @@ while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
                   
                       <div class="input-group input-group-outline">
                         <label class="form-label">Current password</label>
-                        <input type="text" class="form-control" name="name">
+                        <input type="text" class="form-control" name="password">
                       </div>
                     
                       <div class="input-group input-group-outline mt-4">
                         <label class="form-label">new password</label>
-                        <input type="text" class="form-control" name="phone">
+                        <input type="text" class="form-control" name="new_password">
                       </div>
                     
                       <div class="input-group input-group-outline mt-4">
                         <label class="form-label">confirm new password</label>
-                        <input type="text" class="form-control" name="email">
+                        <input type="text" class="form-control" name="repeat_new_password">
                       </div>
                  
-                      <div class="text-center mx-7" style="margin-top:-4px;">
-                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="Datas" onclick="submitForm()" ><i class="far fa-save"></i> Save</button>
+                      <div class="text-center mx-5" style="margin-top:-4px;">
+                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="Password_changed"><i class="far fa-save"></i> Save</button>
                       </div>
                  
-
                 </form>
 
               </div>

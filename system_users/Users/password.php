@@ -1,6 +1,5 @@
 <?php
-    session_start();
-    
+    session_start();    
     if (!isset($_SESSION['email'])) {
       ?>
         <script type="text/javascript">
@@ -19,6 +18,7 @@
     $query_user_info=mysqli_query($con,$sql_user_info);
     while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
       $user_image=$row_user_info['image'];
+      $user_name=$row_user_info['name'];
     }
 
                       
@@ -95,7 +95,7 @@
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="#" target="_blank">
         <img src="../../assets/img/users/<?php echo $user_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white"><?php echo $_SESSION['name'];?></span>
+        <span class="ms-1 font-weight-bold text-white"><?php echo $user_name;?></span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -147,19 +147,12 @@
           <h6 class="font-weight-bolder mb-0">Password</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-          <!-- <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <div class="input-group input-group-outline">
-              <label class="form-label">Type here...</label>
-              <input type="text" class="form-control">
-            </div>
-          </div> -->
+
           <?php
             require 'search.php';
           ?>
           <ul class="navbar-nav  justify-content-end">
-           <!--  <li class="nav-item d-flex align-items-center">
-              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="https://www.creative-tim.com/builder/material?ref=navbar-dashboard">Online Builder</a>
-            </li> -->
+          
             <li class="nav-item d-flex align-items-center">
               <a href="#" class="nav-link text-body font-weight-bold px-0" data-bs-toggle="modal" data-bs-target="#logoutModal">
                 <i class="fa fa-user me-sm-1"></i>
@@ -178,11 +171,7 @@
         <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4"></div>
         <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
 
-            <?php echo $Password_changed_well;?>
-            <?php echo $all_fields_required;?>
-            <?php echo $current_password_incorrect;?>
-            <?php echo $new_password_do_not_match;?>
-            <?php echo $password_mustbe_greaterthan_8;?>
+            <?php echo $Password_changed_well.$all_fields_required.$current_password_incorrect.$new_password_do_not_match.$password_mustbe_greaterthan_8;?>
             
             <div class="card z-index-0 fadeIn3 fadeInBottom">
               <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2">

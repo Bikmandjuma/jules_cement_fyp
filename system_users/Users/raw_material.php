@@ -21,7 +21,7 @@
       $user_image=$row_user_info['image'];
     }
 
-    $allfieldRequired=$account_created="";
+    $allfieldRequired=$account_created=$Name_exist="";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -50,23 +50,48 @@
 
             }else{
 
-                  $query=mysqli_query($con,"INSERT INTO raw_material values ('','$name','$description','$quantity','$unit')");
+                  //avoid duplication of name
+                  $sql_name=mysqli_query($con,"SELECT name from raw_material where name='".$name."'");
 
-                  if ($query == true) {
-                      
+                  $count_name=mysqli_num_rows($sql_name);
+
+                  if ($count_name == 0) {
+                    
+                  
+                      $query=mysqli_query($con,"INSERT INTO raw_material values ('','$name','$description','$quantity','','$unit','','','$users_id')");
+
+                      if ($query == true) {
+                          
+                          ?>
+                            <script>
+                              
+                              setTimeout(function(){
+                                  var required=document.getElementById('account_created');
+                                  required.style.display="block";
+                                  required.style.display="none";
+                              },4000);
+
+                            </script>
+                          <?php
+
+                         $account_created='<p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;" id="account_created"><b>Data inserted successfully !</b></p><br>';
+
+                      }
+
+                  }else{
                       ?>
                         <script>
-                          
-                          setTimeout(function(){
-                              var required=document.getElementById('account_created');
-                              required.style.display="block";
-                              required.style.display="none";
-                          },4000);
+                              
+                              setTimeout(function(){
+                                  var required=document.getElementById('name_exist');
+                                  required.style.display="block";
+                                  required.style.display="none";
+                              },4000);
 
-                        </script>
-                      <?php
+                            </script>
+                          <?php
 
-                     $account_created='<p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;" id="account_created"><b>Data inserted successfully !</b></p><br>';
+                         $Name_exist='<p style="background-color:red;color:white;padding:10px;border-radius:5px;text-align:center;" id="name_exist">This name <strong>('.$name.')</strong> is already exist , just update !</p><br>';
 
                   }
                 
@@ -171,12 +196,12 @@
         <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4"></div>
         <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
 
-          <?php echo $allfieldRequired.$account_created;?>
+          <?php echo $allfieldRequired.$account_created.$Name_exist;?>
             
             <div class="card z-index-0 fadeIn3 fadeInBottom">
               
-              <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2">
-                <div class="bg-gradient-secondary shadow-primary border-radius-lg py-3 pe-1">
+              <div class="card-header p-0 position-relative mt-n4 z-index-2">
+                <div class="bg-gradient-success shadow-primary border-radius-lg py-3 pe-1">
                   <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Add raw material</h4>
                 </div>
               </div>
@@ -188,8 +213,16 @@
                     <div class="row">
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                         <div class="input-group input-group-outline">
-                          <label class="form-label">Name</label>
-                          <input type="text" class="form-control" name="name">
+                          <select name="name" class="form-control" required>
+                            <option>Name</option>
+                            <option value="Limestone">Limestone</option>
+                            <option value="Clay or Shale">Clay or Shale</option>
+                            <option value="Sand or Silica">Sand or Silica</option>
+                            <option value="Iron Ore">Iron Ore</option>
+                            <option value="Fly Ash">Fly Ash</option>
+                            <option value="Gypsum">Gypsum</option>
+                          </select>
+
                         </div>
                       </div>
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
@@ -203,14 +236,17 @@
                     <div class="row">
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                         <div class="input-group input-group-outline mt-4">
-                          <!-- <label class="form-label">Description</label> -->
                           <textarea type="text" class="form-control" name="description" placeholder="description"></textarea>
                         </div>
                       </div>
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                         <div class="input-group input-group-outline mt-4">
-                          <label class="form-label">Unit</label>
-                          <input type="text" class="form-control" name="unit">
+                          <select name="unit" class="form-control" required>
+                            <option>Select unit</option>
+                            <option value="Kg">Kilogram (kg)</option>
+                            <option value="t">Metric ton (t) or tonne</option>
+                            <option value="lb">Pound (lb)</option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -231,8 +267,8 @@
       <br>
 
       <div class="row">
-        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div>
-        <div class="col-xl-8 col-sm-6 mb-xl-0 mb-4">
+        <!-- <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div> -->
+        <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4">
           
             <div class="card">
               <div class="card-header pb-0">
@@ -264,7 +300,7 @@
                             $rm_id=$user_row['rm_id'];
                             $name_data=$user_row['name'];
                             $descr_data=$user_row['description'];
-                            $qty_data=$user_row['quantity'];
+                            $qty_data=$user_row['quantity_stored'];
                             $unit_data=$user_row['unit'];
                                   
                             echo '      
@@ -306,7 +342,7 @@
             </div>
 
         </div>
-        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div>
+        <!-- <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div> -->
       </div>
 
 

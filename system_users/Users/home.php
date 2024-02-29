@@ -113,7 +113,7 @@
       <div class="row">
         <div class="col-xl-2 col-sm-6"></div>
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
+          <div class="card" onclick="window.location.href='file_storage.php'">
             <div class="card-header p-3 pt-2">
               <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                 <i class="fa fa-image"></i>
@@ -130,24 +130,24 @@
           </div>
         </div>
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
+          <div class="card" onclick="window.location.href='report.php'">
             <div class="card-header p-3 pt-2">
               <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
                 <i class="far fa-file-alt"></i>
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">Report</p>
-                <h4 class="mb-0"><?php echo 0;?></h4>
+                <h4 class="mb-0"><?php echo $cement->report_count();?></h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
             <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">0 </span>all report</p>
+              <p class="mb-0"><span class="text-success text-sm font-weight-bolder"><?php echo $cement->report_count();?> </span>all report</p>
             </div>
           </div>
         </div>
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
+          <div class="card" onclick="window.location.href='raw_material.php'">
             <div class="card-header p-3 pt-2">
               <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
                 <!-- <i class="far fa-material"></i> -->
@@ -155,12 +155,12 @@
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">Raw materials</p>
-                <h4 class="mb-0"><?php echo 0;?></h4>
+                <h4 class="mb-0"><?php echo $cement->raw_materials_count();?></h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
             <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder"><?php echo 0;?></span> all Raw materials</p>
+              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder"><?php echo $cement->raw_materials_count();?></span> all Raw materials</p>
             </div>
           </div>
         </div>
