@@ -19,7 +19,7 @@
   <link id="pagestyle" href="../../assets/css/material-dashboard.css?v=3.0.4" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-XXXXXXX" crossorigin="anonymous" />
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     #eye_id:hover{
