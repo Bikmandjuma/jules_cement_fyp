@@ -171,7 +171,7 @@
                   </div>
                   <div class="card-body">
                     <h6 class="mb-0 ">analytics of stored and consumed Raw materials </h6>
-                    <p class="text-sm "><span class="font-weight-bolder">Stored data is in sky blue while consumed data is in pink</span></p>
+                    <p class="text-sm "><span class="font-weight-bolder">Stored data are in sky blue while consumed data are in pink</span></p>
                     <hr class="dark horizontal">
                     <div class="d-flex">
                       <i class="material-icons text-sm my-auto me-1"></i>
@@ -273,14 +273,14 @@
                                     
                                 <div class="card text-center" style="box-shadow:1px solid rgba(2, 8, 4, 1.0);">
                                   <h5>Stored Raw Materials Analytics</h5>
-                                  <p>Mean: <?php echo $stored_mean; ?></p>
-                                  <p>Median: <?php echo $stored_median; ?></p>
-                                  <p>Standard Deviation: <?php echo $stored_std_deviation; ?></p>
+                                  <p>Mean: <strong><?php echo $stored_mean; ?></strong></p>
+                                  <p>Median: <strong><?php echo $stored_median; ?></strong></p>
+                                  <p>Standard Deviation: <strong><?php echo $stored_std_deviation; ?></strong></p>
 
                                   <h5>Consumed Raw Materials Analytics</h5>
-                                  <p>Mean: <?php echo $consumed_mean; ?></p>
-                                  <p>Median: <?php echo $consumed_median; ?></p>
-                                  <p>Standard Deviation: <?php echo $consumed_std_deviation; ?></p>
+                                  <p>Mean: <strong><?php echo $consumed_mean; ?></strong></p>
+                                  <p>Median: <strong><?php echo $consumed_median; ?></strong></p>
+                                  <p>Standard Deviation: <strong><?php echo $consumed_std_deviation; ?></strong></p>
                                 </div>
 
 

@@ -246,7 +246,7 @@
             </div>
             <div class="card-body">
               <h6 class="mb-0 ">analytics of stored and consumed Raw materials </h6>
-              <p class="text-sm "><span class="font-weight-bolder">Stored data is in sky blue while consumed data is in pink</span></p>
+              <p class="text-sm "><span class="font-weight-bolder">Stored data are in sky blue while consumed data are in pink</span></p>
               <hr class="dark horizontal">
               <div class="d-flex">
                 <i class="material-icons text-sm my-auto me-1"></i>
