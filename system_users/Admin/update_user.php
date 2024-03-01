@@ -65,6 +65,14 @@
         return $data;
     }
 
+    $users_id=$_SESSION['a_id'];
+    $sql_user_info="SELECT * FROM admin where a_id=".$users_id."";
+    $query_user_info=mysqli_query($con,$sql_user_info);
+    while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
+      $admin_image=$row_user_info['image'];
+    }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,7 +84,7 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="#" target="_blank">
-        <img src="../../assets/img/users/<?php echo $_SESSION['image'];?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
+        <img src="../../assets/img/admin/<?php echo $admin_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
         <span class="ms-1 font-weight-bold text-white"><?php echo $_SESSION['name'];?></span>
       </a>
     </div>
@@ -86,7 +94,8 @@
         <li class="nav-item">
           <a class="nav-link text-white" href="#" onclick="window.location.href='home.php'">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">dashboard</i>
+              <i class="fas fa-tachometer-alt"></i>
+              <!-- <i class="material-icons opacity-10">dashboard</i> -->
             </div>
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>

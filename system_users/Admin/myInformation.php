@@ -18,40 +18,49 @@
     $sql_user_info="SELECT * FROM admin where a_id=".$users_id."";
     $query_user_info=mysqli_query($con,$sql_user_info);
     while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
-      $admin_image=$row_user_info['image'];
-      $admin_name=$row_user_info['name'];
+      $user_image=$row_user_info['image'];
+      $user_name=$row_user_info['name'];
+      $user_phone=$row_user_info['phone'];
+      $user_email=$row_user_info['email'];
     }
 
-    //fetch time ago of consumation
-    $time_cons_sql=mysqli_query($con,"SELECT * from raw_material where consumed_time is not NULL");
-    while ($row_time_Cons=mysqli_fetch_assoc($time_cons_sql)) {
-        $time_ago=$row_time_Cons['consumed_time'];
+    $update_user_info=null;;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $name_x=test_input($_POST['name']);
+        $email_x=test_input($_POST['email']);
+        $phone_x=test_input($_POST['phone']);
+
+        
+        if (isset($_POST['edit_info'])) {
+            $sql="UPDATE admin SET name='$name_x',phone='$phone_x',email='$email_x' WHERE a_id='$users_id'";
+
+            $query=mysqli_query($con,$sql);
+
+            if ($query == 1) {
+                ?>
+                  <script>          
+                    setTimeout(function(){
+                        var required=document.getElementById('update_data');
+                            required.style.display="block";
+                            required.style.display="none";
+                            window.location.href='myInformation.php';
+                    },4000);
+
+                  </script>
+                <?php
+
+                $update_user_info='<p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;" id="update_data"><b>Data updated successfully !</b></p>';
+            }
+        }
     }
 
-    // Your timestamp or date string
-    $timestamp = $time_ago;
-
-    // Create DateTime objects for the current time and the timestamp
-    $currentDateTime = new DateTime();
-    $timestampDateTime = new DateTime($timestamp);
-
-    // Calculate the difference
-    $difference = $currentDateTime->diff($timestampDateTime);
-
-    // Format the difference as "X time ago"
-    if ($difference->y > 0) {
-        $timeAgo = $difference->y . ' year' . ($difference->y > 1 ? 's' : '') . ' ago';
-    } elseif ($difference->m > 0) {
-        $timeAgo = $difference->m . ' month' . ($difference->m > 1 ? 's' : '') . ' ago';
-    } elseif ($difference->d > 0) {
-        $timeAgo = $difference->d . ' day' . ($difference->d > 1 ? 's' : '') . ' ago';
-    } elseif ($difference->h > 0) {
-        $timeAgo = $difference->h . ' hour' . ($difference->h > 1 ? 's' : '') . ' ago';
-    } elseif ($difference->i > 0) {
-        $timeAgo = $difference->i . ' minute' . ($difference->i > 1 ? 's' : '') . ' ago';
-    } else {
-        $timeAgo = 'just now';
+    function test_input($data){
+        $data=trim($data);
+        $data=stripslashes($data);
+        $data=htmlspecialchars($data);
+        return $data;
     }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,15 +72,15 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="#" target="_blank">
-        <img src="../../assets/img/admin/<?php echo $admin_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white"><?php echo $admin_name;?></span>
+        <img src="../../assets/img/admin/<?php echo $user_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white"><?php echo $user_name;?></span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-info" href="#" onclick="window.location.href='home.php'">
+          <a class="nav-link text-white" href="#" onclick="window.location.href='home.php'">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-tachometer-alt"></i>
               <!-- <i class="material-icons opacity-10">dashboard</i> -->
@@ -114,7 +123,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link text-white" onclick="window.location.href='myInformation.php'" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link text-white active bg-gradient-info" onclick="window.location.href='myInformation.php'" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="nav-link-text ms-1"><i class="fa fa-address-card"></i>&nbsp;&nbsp;My info</span>
           </a>
         </li>
@@ -130,9 +139,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">My information</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Dashboard</h6>
+          <h6 class="font-weight-bolder mb-0">My information</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <!-- <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -145,9 +154,7 @@
             require 'search.php';
           ?>
           <ul class="navbar-nav  justify-content-end">
-           <!--  <li class="nav-item d-flex align-items-center">
-              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="https://www.creative-tim.com/builder/material?ref=navbar-dashboard">Online Builder</a>
-            </li> -->
+
             <li class="nav-item d-flex align-items-center">
               <a href="#" class="nav-link text-body font-weight-bold px-0" data-bs-toggle="modal" data-bs-target="#logoutModal">
                 <i class="fa fa-user me-sm-1"></i>
@@ -162,101 +169,98 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       <div class="row">
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="card" onclick="window.location.href='users.php'">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                <i class="fa fa-users"></i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Users (employee)</p>
-                <h4 class="mb-0"><?php echo $cement->users_counts();?></h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-            <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder"><?php echo $cement->users_counts();?></span> all users</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="card" onclick="window.location.href='report.php'">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                <i class="far fa-file-alt"></i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Report</p>
-                <h4 class="mb-0"><?php echo $cement->report_count_on_admin();?></h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-            <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder"><?php echo $cement->report_count_on_admin();?> </span>all report</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="card" onclick="window.location.href='raw_material.php'">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                <!-- <i class="far fa-material"></i> -->
-                <i class="fas fa-gem"></i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Raw materials</p>
-                <h4 class="mb-0"><?php echo $cement->raw_materials_count();?></h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-            <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder"><?php echo $cement->raw_materials_count();?></span> all Raw materials</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-sm-6">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                <!-- <i class="far fa-online-users"></i> -->
-                <i class="fas fa-user-circle"></i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Online users</p>
-                <h4 class="mb-0"><?php echo $cement->oncline_users_counts();?></h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-            <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder"><?php echo $cement->oncline_users_counts();?> </span>all online users</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        
-        <div class="col-lg-12 col-md-12 mt-1 mb-4">
-          <div class="card z-index-2  ">
-            <div class="card-header p-0 position-relative mt-n1 mx-3 z-index-2 bg-transparent">
-              <div class="shadow-success border-radius-lg py-3 pe-1">
-                <div class="chart">
-                  <canvas id="rawMaterialsChart" width="800" height="170"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <h6 class="mb-0 ">analytics of stored and consumed Raw materials </h6>
-              <p class="text-sm "><span class="font-weight-bolder">Stored data is in sky blue while consumed data is in pink</span></p>
-              <hr class="dark horizontal">
-              <div class="d-flex">
-                <i class="material-icons text-sm my-auto me-1"></i>
-                <p class="mb-0 text-sm">Analytic chart updated <b><?php echo $timeAgo;?></b> !</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="col-xl-3 col-sm-4"></div>
+        <div class="col-xl-6 col-sm-4">
+          <?php echo $update_user_info;?>
+          <div class="card card-primary card-outline">
+                    <div class="card-header text-center" style="font-size:20px; box-shadow:0px 4px 8px 0px rgba(0, 0, 0, 0.2);"><i class="fa fa-address-card"></i>&nbsp;My information </div>
+                    <div class="card-body" style="overflow: auto;">
 
+                      <div class="row">
+                          <div class="col-md-12 text-center">
+                              <img onclick="window.location.href='profile.php';" src="../../assets/img/admin/<?php echo $user_image;?>" class="img-circle elevation-2" alt="User Image" style="width:100px;height:100px;border-radius:50%;border:1px solid skyblue;z-index: 1;display: relative;margin-top:1px; ">
+
+                          </div>
+
+                      </div>           
+                      
+                      <hr>
+
+                      <div class="row">
+                          <div class="col-md-6 pt-3">
+                            <span id="my_data"><p><b>Name :&nbsp;</b></p><p class="text-info"><b><?php echo $user_name;?></b></p></span>
+                          </div>
+
+                          <div class="col-md-6 pt-3">
+                            <span id="my_data"><p><b>Phone :&nbsp;</b></p><p class="text-info"><b><?php echo $user_phone;?></b></p></span>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-6 pt-3">
+                            <span id="my_data"><p><b>Email :&nbsp;</b></p><p class="text-info"><b><?php echo $user_email;?></b></p></span>
+                          </div>
+                          <div class="col-md-6 pt-3">
+                            <span id="my_data"><p><b>Role :&nbsp;</b></p><p class="text-info"><b>Admin</b></p></span>
+                          </div>
+                      </div>
+
+                      <hr>
+
+                      <div class="row">
+                        <div class="col-md-12 pt-3 text-center">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#EditInfoModal" data-backdrop="static" data-keyboard="false"><button class="btn btn-info float-right"><i class="fa fa-edit"></i>&nbsp;Edit info</button></a>
+                        </div>
+                      </div>
+                    
+                    </div>
+                  </div>
+
+        </div>
+        <div class="col-xl-3 col-sm-4"></div>
       </div>
+
+      <!--start of edit modal -->
+
+      <div class="modal fade" id="EditInfoModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="logoutModalLabel">Edit your information</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+              <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
+                                
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="input-group input-group-outline mt-2" style="padding-right:30px;padding-left:30px;">
+                            <input type="text" name="name" placeholder="name" value="<?php echo $user_name;?>" class="form-control" required>
+                          </div>
+
+                          <div class="input-group input-group-outline mt-2" style="padding-right:30px;padding-left:30px;">
+                            <input type="number"  name="phone" value="<?php echo $user_phone;?>" class="form-control" required>
+                          </div>
+
+                          <div class="input-group input-group-outline mt-2" style="padding-right:30px;padding-left:30px;">
+                            <input type="text" name="email" value="<?php echo $user_email;?>" class="form-control" required>
+                          </div>
+                          
+                      </div>
+                  </div>
+
+                  <div class="row mt-2">
+                      <div class="col-md-4"></div>
+                          <div class="col-md-4">
+                              <button style="margin-top:6px;" class="btn btn-info" type="submit" name="edit_info"><i class="fa fa-save"></i> Save change</button>
+                          </div>
+                      <div class="col-md-4"></div>
+                  </div>
+
+              </form>
+
+          </div>
+        </div>
+  </div>
+
       
   </main>
     

@@ -126,6 +126,7 @@
             <span class="nav-link-text ms-1"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Settings</span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#" onclick="window.location.href='myInformation.php'"><i class="fa fa-address-card"></i>&nbsp;&nbsp;My info</a></li>
             <li><a class="dropdown-item" href="#" onclick="window.location.href='profile.php'"><i class="fa fa-image"></i>&nbsp;&nbsp;Profile picture</a></li>
             <li><a class="dropdown-item text-info" href="#" onclick="window.location.href='password.php'"><i class="fa fa-key"></i>&nbsp;&nbsp;Password</a></li>
           </ul>

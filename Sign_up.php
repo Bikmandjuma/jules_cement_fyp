@@ -112,7 +112,7 @@
                     </script>
                   <?php
 
-                 $account_created="<p style='color:teal;text-align:center;' id='account_created'>Account created well</p>";
+                 $account_created='<p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;" id="account_created"><b>Account created well !</b></p>';
                }
             }
         }

@@ -61,11 +61,12 @@ if (isset($_POST['SubmitProfilePicture'])) {
   }
 
 
-$sql_user_info="SELECT * FROM admin where a_id=".$user_id."";
-$query_user_info=mysqli_query($con,$sql_user_info);
-while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
-  $admin_image=$row_user_info['image'];
-}
+  $sql_user_info="SELECT * FROM admin where a_id=".$user_id."";
+  $query_user_info=mysqli_query($con,$sql_user_info);
+  while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
+    $admin_image=$row_user_info['image'];
+    $admin_name=$row_user_info['name'];
+  }
 
 ?>
 <!DOCTYPE html>
@@ -79,7 +80,7 @@ while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="#" target="_blank">
         <img src="../../assets/img/admin/<?php echo $admin_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white"><?php echo $_SESSION['name'];?></span>
+        <span class="ms-1 font-weight-bold text-white"><?php echo $admin_name;?></span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -88,7 +89,8 @@ while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
         <li class="nav-item">
           <a class="nav-link text-white" href="#" onclick="window.location.href='home.php'">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">dashboard</i>
+              <i class="fas fa-tachometer-alt"></i>
+              <!-- <i class="material-icons opacity-10">dashboard</i> -->
             </div>
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
@@ -102,13 +104,16 @@ while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
             <span class="nav-link-text ms-1"><i class="fas fa-users"></i>&nbsp;&nbsp;Users</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="#" onclick="window.location.href='report.php'">
-            <!-- <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">report</i>
-            </div> -->
-            <span class="nav-link-text ms-1"> <i class="far fa-file-alt"></i>&nbsp;&nbsp;Reports</span>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="nav-link-text ms-1"><i class="fa fa-eye"></i>&nbsp;&nbsp;View stuff</span>
           </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+             <li><a class="dropdown-item" href="#" onclick="window.location.href='raw_material.php'"><i class="fas fa-gem"></i>&nbsp;&nbsp;Raw materials</a></li>
+            <li><a class="dropdown-item" href="#" onclick="window.location.href='report.php'"><i class="fa fa-file-alt"></i>&nbsp;&nbsp;Report</a></li>
+            <li><a class="dropdown-item" href="#" onclick="window.location.href='analytic_chart.php'"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;Analytics chart</a></li>
+          </ul>
+
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white active bg-gradient-info" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -118,6 +123,12 @@ while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
             <li><a class="dropdown-item" href="#" onclick="window.location.href='profile.php'"><i class="fa fa-image"></i>&nbsp;&nbsp;Profile picture</a></li>
             <li><a class="dropdown-item" href="#" onclick="window.location.href='password.php'"><i class="fa fa-key"></i>&nbsp;&nbsp;Password</a></li>
           </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-white" onclick="window.location.href='myInformation.php'" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="nav-link-text ms-1"><i class="fa fa-address-card"></i>&nbsp;&nbsp;My info</span>
+          </a>
         </li>
 
       </ul>
@@ -131,9 +142,9 @@ while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Manager-password</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Manager-profile</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Manager-password</h6>
+          <h6 class="font-weight-bolder mb-0">Manager-profile</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <?php

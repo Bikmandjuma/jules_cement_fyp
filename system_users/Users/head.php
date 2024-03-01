@@ -31,6 +31,11 @@
       cursor: pointer;
       color:red;
     }
+
+    #my_data p{
+        display: inline-block;
+    }
+    
   </style>
 </head>
 

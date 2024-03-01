@@ -138,6 +138,7 @@
     $query_user_info=mysqli_query($con,$sql_user_info);
     while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
       $admin_image=$row_user_info['image'];
+      $admin_name=$row_user_info['name'];
     }
 
 ?>
@@ -151,8 +152,8 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="#" target="_blank">
-        <img src="../../assets/img/admin/<?php echo $admin_image;?>" title="user image" style="width:40px;height:45px;border-radius:20%;" class="navbar-brand-img img-circle" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white"><?php echo $_SESSION['name'];?></span>
+        <img src="../../assets/img/admin/<?php echo $admin_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img img-circle" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white"><?php echo $admin_name;?></span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -161,7 +162,7 @@
         <li class="nav-item">
           <a class="nav-link text-white" href="#" onclick="window.location.href='home.php'">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">dashboard</i>
+              <i class="fas fa-tachometer-alt"></i>
             </div>
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
@@ -169,19 +170,20 @@
     
         <li class="nav-item">
           <a class="nav-link text-white active bg-gradient-info" href="#" onclick="window.location.href='users.php'">
-            <!-- <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons">users</i>
-            </div> -->
+            
             <span class="nav-link-text ms-1"><i class="fas fa-users"></i>&nbsp;&nbsp;Users</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="#" onclick="window.location.href='report.php'">
-            <!-- <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">report</i>
-            </div> -->
-            <span class="nav-link-text ms-1"> <i class="far fa-file-alt"></i>&nbsp;&nbsp;Reports</span>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="nav-link-text ms-1"><i class="fa fa-eye"></i>&nbsp;&nbsp;View stuff</span>
           </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+             <li><a class="dropdown-item" href="#" onclick="window.location.href='raw_material.php'"><i class="fas fa-gem"></i>&nbsp;&nbsp;Raw materials</a></li>
+            <li><a class="dropdown-item" href="#" onclick="window.location.href='report.php'"><i class="fa fa-file-alt"></i>&nbsp;&nbsp;Report</a></li>
+            <li><a class="dropdown-item" href="#" onclick="window.location.href='analytic_chart.php'"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;Analytics chart</a></li>
+          </ul>
+
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -191,6 +193,11 @@
             <li><a class="dropdown-item" href="#" onclick="window.location.href='profile.php'"><i class="fa fa-image"></i>&nbsp;&nbsp;Profile picture</a></li>
             <li><a class="dropdown-item" href="#" onclick="window.location.href='password.php'"><i class="fa fa-key"></i>&nbsp;&nbsp;Password</a></li>
           </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" onclick="window.location.href='myInformation.php'" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="nav-link-text ms-1"><i class="fa fa-address-card"></i>&nbsp;&nbsp;My info</span>
+          </a>
         </li>
 
       </ul>
@@ -230,7 +237,7 @@
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4"></div>
         <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
           <div class="card z-index-0 fadeIn3 fadeInBottom">
-              <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2">
+              <div class="card-header p-0 position-relative mt-n4 z-index-2">
                 <div class="bg-gradient-info shadow-primary border-radius-lg py-3 pe-1">
                   <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Register new user</h4>
                 </div>
@@ -351,7 +358,7 @@
                                 </td>
                                 <td class="align-middle text-center">
                                   ';?>
-                                  <i class="far fa-edit text-info" id="eye_id" onclick="window.location.href='update_user.php?user_id=<?php echo $user_id;?>'" title="update <?php echo $name_data;?>'s data"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-trash text-danger" id="eye_id" onclick="deletefn('<?php echo $user_id;?>')" title="delete <?php echo $name_data;?>'s data"></i>
+                                  <!--i class="far fa-edit text-info" id="eye_id" onclick="window.location.href='update_user.php?user_id=<?php echo $user_id;?>'" title="update <?php echo $name_data;?>'s data"></i-->&nbsp;&nbsp;&nbsp;<i class="fa fa-trash text-danger" id="eye_id" onclick="deletefn('<?php echo $user_id;?>')" title="delete <?php echo $name_data;?>'s data"></i>
                                   <?php
                                 '</td>
 
@@ -384,7 +391,7 @@
 
   <script type="text/javascript">
       function deletefn(user_id) {
-          var confiramtion=confirm("Are you sure you want to delete this user?");
+          var confiramtion=confirm("Are you sure you want to delete this user , you will lost all report added by this user ?");
           if (confiramtion) {
               window.location.href='delete_user.php?user_id='+user_id+'';  
           }

@@ -64,6 +64,7 @@
     $query_user_info=mysqli_query($con,$sql_user_info);
     while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
       $user_image=$row_user_info['image'];
+      $user_name=$row_user_info['name'];
     }
 ?>
 <!DOCTYPE html>
@@ -77,7 +78,7 @@
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="#" target="_blank">
         <img src="../../assets/img/users/<?php echo $user_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white"><?php echo $_SESSION['name'];?></span>
+        <span class="ms-1 font-weight-bold text-white"><?php echo $user_name;?></span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -108,6 +109,7 @@
             <span class="nav-link-text ms-1"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Settings</span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#" onclick="window.location.href='myInformation.php'"><i class="fa fa-address-card"></i>&nbsp;&nbsp;My info</a></li>
             <li><a class="dropdown-item text-info" href="#" onclick="window.location.href='profile.php'"><i class="fa fa-image"></i>&nbsp;&nbsp;Profile picture</a></li>
             <li><a class="dropdown-item" href="#" onclick="window.location.href='password.php'"><i class="fa fa-key"></i>&nbsp;&nbsp;Password</a></li>
           </ul>
@@ -173,7 +175,7 @@
                           <img src="..\..\assets\img\users\<?php echo $user_image;?>">
                           <div class="containers">
                             <br>
-                            <h4><b><?php echo $_SESSION['name']; ?></b></h4> 
+                            <h4><b><?php echo $user_name; ?></b></h4> 
                             <?php
                               if ($img_number == 1) {
                                 ?>

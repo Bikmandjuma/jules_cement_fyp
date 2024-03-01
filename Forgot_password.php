@@ -3,14 +3,17 @@
     session_start();
     use PHPMailer\PHPMailer\PHPMailer;
     include_once('Connect/connection.php');
-
+    require_once 'PHPMailer\PHPMailer.php';
+    require_once 'PHPMailer\SMTP.php';
+    require_once 'PHPMailer\Exception.php';
+    
     $Email_Sent=$Email_Not_Found=$MailerError=$email_required=null;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if(isset($_POST['submit_forgot_pswd'])){
               $email_input= test_input($_POST['email']);
-              $sql="SELECT email FROM users UNION SELECT email FROM admin";
+              $sql="SELECT email,phone FROM users UNION SELECT email,phone FROM admin";
               $res=mysqli_query($con,$sql);
               while ($rows=mysqli_fetch_array($res)) {
                   if (empty($email_input)) {
@@ -32,35 +35,26 @@
 
                   }elseif($rows[0] === $email_input) {
                         $email=$rows[0];
-                        
-                        require_once 'PHPMailer\PHPMailer.php';
-                        require_once 'PHPMailer\SMTP.php';
-                        require_once 'PHPMailer\Exception.php';
-
+            
                         $r = mysqli_fetch_assoc($res);
-                        $password = $r['password'];
-                        $link="<a href='ResetPassword.php'>Reset password</a>";
 
                         //Encrypting email
                         $email_string=$email;
-
-                        // Store the cipher method
-                        $ciphering = "AES-128-CTR";
-
-                        // Use OpenSSl Encryption method
-                        $iv_length = openssl_cipher_iv_length($ciphering);
-                        $options = 0;
-
-                        // Non-NULL Initialization Vector for encryption
-                        $encryption_iv = '1234567891011121';
-
-                        // Store the encryption key
-                        $encryption_key = "TMIS";
-
-                        // Use openssl_encrypt() function to encrypt the data
-                        $encrypted_email = openssl_encrypt($email_string, $ciphering,$encryption_key, $options, $encryption_iv);
-
+                        
                         try {
+
+                          //select user
+                          $sql_user=mysqli_query($con,"SELECT * from users where email='$email'");
+                          $sql_user_num=mysqli_num_rows($sql_user);
+
+                          if ($sql_user_num == 1) {
+                            $user_rand_pswd=rand(0,1000000);
+                            $new_pswd=md5($user_rand_pswd);
+                            $update_user=mysqli_query($con,"UPDATE users SET password='$new_pswd' where email='$email'");
+                          }else{
+                            $new_pswd=md5($user_rand_pswd);
+                            $update_user=mysqli_query($con,"UPDATE admin SET password='$new_pswd' where email='$email'");
+                          }
 
                             //Server settings
                             // $mail->SMTPDebug = SMTP::DEBUG_SERVER; 
@@ -75,18 +69,18 @@
 
                             //Content
                             $mail->isHTML(true); 
-                            $mail->setFrom($email,'Tmis');
+                            $mail->setFrom($email,'RAW MATERIALS MINING ANALYTIC SYSTEM');
                             $mail->addAddress($email);               //Set email format to HTML
-                            $mail->Subject = "Password reset link";
+                            $mail->Subject = "Password reset";
                             // $mail->Body    = "<span id='link_message'>Please use this link to reset password " .'<a href="http://localhost/project/TMIS/Training-managent-system-TMIS/ResetPassword.php?email='.$encrypted_email.'">Reset Password here : '.$encrypted_email.'</a></span>';
                             $mail->Body ='
                                         <html> 
                                           <head> 
-                                              <title>Welcome to CodexWorld</title> 
+                                              <title>Welcome to CIMERWA</title> 
                                           </head> 
                                           <body> 
-                                              <h1>Training management information system </h1> 
-                                              <p style="box-radius:5px;border:1px solid red;box-shadow:0px 4px 8px 0px rgba(0,0,0,0.2);text-align: center;background-color: white;font-family: sans-serif;font-weight: bold;padding: 5px;">Please use this link to reset password <a href="http://localhost/project/TMIS/Training-managent-system-TMIS/ResetPassword.php?email='.$encrypted_email.'">Reset Password here</a></p>
+                                              <h1>RAW MATERIALS MINING ANALYTIC SYSTEM</h1> 
+                                              <p style="box-radius:5px;border:1px solid red;box-shadow:0px 4px 8px 0px rgba(0,0,0,0.2);text-align: center;background-color: white;font-family: sans-serif;font-weight: bold;padding: 5px;">Please use this <span style="color:blue;">'.$user_rand_pswd.'</span> as password to login into <b>RAW MATERIALS MINING </b> ANALYTIC SYSTEM</p>
                                           </body> 
                                           </html>';
                       

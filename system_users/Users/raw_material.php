@@ -19,6 +19,7 @@
     $query_user_info=mysqli_query($con,$sql_user_info);
     while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
       $user_image=$row_user_info['image'];
+      $user_name=$row_user_info['name'];
     }
 
     $allfieldRequired=$account_created=$Name_exist="";
@@ -119,7 +120,7 @@
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="#" target="_blank">
         <img src="../../assets/img/users/<?php echo $user_image;?>" title="user image" style="width:40px;height:40px;border-radius:50%;" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white"><?php echo $_SESSION['name'];?></span>
+        <span class="ms-1 font-weight-bold text-white"><?php echo $user_name;?></span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -150,6 +151,7 @@
             <span class="nav-link-text ms-1"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Settings</span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#" onclick="window.location.href='myInformation.php'"><i class="fa fa-address-card"></i>&nbsp;&nbsp;My info</a></li>
             <li><a class="dropdown-item" href="#" onclick="window.location.href='profile.php'"><i class="fa fa-image"></i>&nbsp;&nbsp;Profile picture</a></li>
             <li><a class="dropdown-item" href="#" onclick="window.location.href='password.php'"><i class="fa fa-key"></i>&nbsp;&nbsp;Password</a></li>
           </ul>
@@ -213,16 +215,8 @@
                     <div class="row">
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                         <div class="input-group input-group-outline">
-                          <select name="name" class="form-control" required>
-                            <option>Name</option>
-                            <option value="Limestone">Limestone</option>
-                            <option value="Clay or Shale">Clay or Shale</option>
-                            <option value="Sand or Silica">Sand or Silica</option>
-                            <option value="Iron Ore">Iron Ore</option>
-                            <option value="Fly Ash">Fly Ash</option>
-                            <option value="Gypsum">Gypsum</option>
-                          </select>
-
+                          <label class="form-label">Name</label>
+                          <input type="text" class="form-control" name="name">
                         </div>
                       </div>
                       <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
@@ -303,6 +297,12 @@
                             $qty_data=$user_row['quantity_stored'];
                             $unit_data=$user_row['unit'];
                                   
+                            if (strlen($descr_data) <20) {
+                              $descr_data=$descr_data;
+                            }else{
+                              $descr_data=substr($descr_data,0,80)."....";
+                            }
+
                             echo '      
                               <tr>
                                 <td class="text-center">
