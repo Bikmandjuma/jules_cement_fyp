@@ -358,7 +358,7 @@
                                 </td>
                                 <td class="align-middle text-center">
                                   ';?>
-                                  <!--i class="far fa-edit text-info" id="eye_id" onclick="window.location.href='update_user.php?user_id=<?php echo $user_id;?>'" title="update <?php echo $name_data;?>'s data"></i-->&nbsp;&nbsp;&nbsp;<i class="fa fa-trash text-danger" id="eye_id" onclick="deletefn('<?php echo $user_id;?>')" title="delete <?php echo $name_data;?>'s data"></i>
+                                  <i class="far fa-edit text-info" id="eye_id" onclick="window.location.href='update_user.php?user_id=<?php echo $user_id;?>'" title="update <?php echo $name_data;?>'s data"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-trash text-danger" id="eye_id" onclick="deletefn('<?php echo $user_id;?>')" title="delete <?php echo $name_data;?>'s data"></i>
                                   <?php
                                 '</td>
 

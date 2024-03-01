@@ -1,77 +1,62 @@
 <?php
-    session_start();
-    
-    if (!isset($_SESSION['email'])) {
-      ?>
-        <script type="text/javascript">
-          window.location.href="../../Sign_in.php";
-        </script>
-      <?php
-    }
-        
-    include_once('../../Connect/connection.php');
-    include_once '../../php_code/codes.php';
-    $cement=new Cement;
+session_start();
 
-    $users_id=$_REQUEST['user_id'];
+if (!isset($_SESSION['email'])) {
+    header("Location: ../../Sign_in.php");
+    exit();
+}
 
-    $users_data=mysqli_query($con,"SELECT * from users where u_id=$users_id");
-    while ($user_row=mysqli_fetch_assoc($users_data)) {
-        $name_data=$user_row['name'];
-        $phone_data=$user_row['phone'];
-        $email_data=$user_row['email'];
-        $image_data=$user_row['image'];
+include_once('../../Connect/connection.php');
+include_once '../../php_code/codes.php';
+$cement = new Cement();
+
+if (isset($_REQUEST['user_id'])) {
+    $users_id = $_REQUEST['user_id'];
+
+    $users_data = mysqli_query($con, "SELECT * FROM users WHERE u_id=$users_id");
+    while ($user_row = mysqli_fetch_assoc($users_data)) {
+        $name_data = $user_row['name'];
+        $phone_data = $user_row['phone'];
+        $email_data = $user_row['email'];
+        $image_data = $user_row['image'];
     }
 
-    $user_info_changed=null;
+    $user_info_changed = null;
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['update_user_info'])) {
+            $name = test_input($_POST['name']);
+            $phone = test_input($_POST['phone']);
+            $email = test_input($_POST['email']);
 
-      if (isset($_POST['update_user_info'])) {
-        
-          $name=test_input($_POST['name']);
-          $phone=test_input($_POST['phone']);
-          $email=test_input($_POST['email']);
-
-          $sql_password="UPDATE users SET name='".$name."',phone='".$phone."',email='".$email."' where u_id='".$users_id."'";
-          $result_password=mysqli_query($con,$sql_password);
-          if ($result_password == true) {
-              $user_info_changed='<p style="background-color:teal;color:white;padding:10px;border-radius:5px;text-align:center;" id="user_info">user info changed successfully !</p><br>';
-               ?>
-                    <script>
-                      
-                      setTimeout(function(){
-                          var required=document.getElementById('user_info');
-                          required.style.display="block";
-                          required.style.display="none";
-
-                          window.location.href='users.php'
-
-                      },4000);
-
-                    </script>
-                <?php
-
-          }
-
-      }
-
+            $sql_password = "UPDATE users SET name='$name', phone='$phone', email='$email' WHERE u_id='$users_id'";
+            $result_password = mysqli_query($con, $sql_password);
+            if ($result_password) {
+                $user_info_changed = '<p style="background-color: teal; color: white; padding: 10px; border-radius: 5px; text-align: center;" id="user_info">User info changed successfully!</p><br>';
+                ?>
+                <script>
+                    setTimeout(function() {
+                        var required = document.getElementById('user_info');
+                        required.style.display = "none";
+                        window.location.href = 'users.php';
+                    }, 4000);
+                </script>
+            <?php
+            }
+        }
     }
+} else {
+    header("Location: users.php");
+    exit();
+}
 
-     function test_input($data){
-        $data=trim($data);
-        $data=stripslashes($data);
-        $data=htmlspecialchars($data);
-        return $data;
-    }
-
-    $users_id=$_SESSION['a_id'];
-    $sql_user_info="SELECT * FROM admin where a_id=".$users_id."";
-    $query_user_info=mysqli_query($con,$sql_user_info);
-    while ($row_user_info=mysqli_fetch_assoc($query_user_info)) {
-      $admin_image=$row_user_info['image'];
-    }
-
+function test_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 
 ?>
 <!DOCTYPE html>
