@@ -323,9 +323,16 @@
                 var data = JSON.parse(xhr.responseText);
 
                 // Extract names and quantities
+                // var names = Object.keys(data);
+                // var quantities = Object.values(data).map(function(item) { return item.quantity; });
+                // var consumed = Object.values(data).map(function(item) { return item.consumed; });
+
+                // Extract names, quantities, and units
                 var names = Object.keys(data);
                 var quantities = Object.values(data).map(function(item) { return item.quantity; });
+                var units = Object.values(data).map(function(item) { return item.unit; });
                 var consumed = Object.values(data).map(function(item) { return item.consumed; });
+
 
                 // Create chart data
                 var ctx = document.getElementById('rawMaterialsChart').getContext('2d');

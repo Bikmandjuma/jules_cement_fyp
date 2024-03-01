@@ -261,7 +261,7 @@
   </main>
     
     <script>
-        // Fetch data from fetch_data.php using AJAX
+        // Fetch data from fetch_analytic_data.php using AJAX
         var xhr = new XMLHttpRequest();
         xhr.open('GET', 'fetch_analytic_data.php', true);
         xhr.onload = function() {
@@ -269,9 +269,10 @@
                 // Parse JSON response
                 var data = JSON.parse(xhr.responseText);
 
-                // Extract names and quantities
+                // Extract names, quantities, and units
                 var names = Object.keys(data);
                 var quantities = Object.values(data).map(function(item) { return item.quantity; });
+                var units = Object.values(data).map(function(item) { return item.unit; }); // Corrected line
                 var consumed = Object.values(data).map(function(item) { return item.consumed; });
 
                 // Create chart data
@@ -310,6 +311,7 @@
             }
         };
         xhr.send();
+
     </script>
   
   <!--   Core JS Files   -->
