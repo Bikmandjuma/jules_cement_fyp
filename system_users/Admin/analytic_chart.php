@@ -268,8 +268,8 @@
                         <!-- Your HTML content goes here -->
                         <div class="card-body">
                           <div class="row">
-                            <div class="col-md-2"></div>
-                            <div class="col-md-8">
+                            <!-- <div class="col-md-2"></div> -->
+                            <div class="col-md-7">
                                     
                                 <div class="card text-center" style="box-shadow:1px solid rgba(2, 8, 4, 1.0);">
                                   <h5>Stored Raw Materials Analytics</h5>
@@ -285,7 +285,11 @@
 
 
                             </div>
-                            <div class="col-md-2"></div>
+                            <div class="col-md-5">
+                              <p>
+                                In summary, <b>mean</b>, <b>median</b>, and <b>deviation</b> are important statistical measures used in raw materials mining analytics to characterize and understand the distribution, central tendency, and variability of raw material quantities, providing valuable insights for decision-making and resource management in mining operations
+                              </p>
+                            </div>
                           </div>
                         </div>
 
