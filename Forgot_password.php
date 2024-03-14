@@ -44,6 +44,7 @@
                         try {
 
                           //select user
+                          $new_pswd=$user_rand_pswd=null;
                           $sql_user=mysqli_query($con,"SELECT * from users where email='$email'");
                           $sql_user_num=mysqli_num_rows($sql_user);
 
@@ -89,18 +90,15 @@
 
                             ?>
                               <script>
-                                
                                 setTimeout(function(){
                                     var required=document.getElementById('Email_Sent');
                                     required.style.display="block";
                                     required.style.display="none";
                                 },5000);
-
                               </script>
                             <?php
 
                             $Email_Sent='<p style="background-color:green;color:white;padding:10px;border-radius:5px;text-align:center;" id="Email_Sent">Check your email ,we mailed you a reset link !</p><br>';
-
 
                         } catch (Exception $e) {
 
