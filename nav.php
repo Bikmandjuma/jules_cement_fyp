@@ -11,7 +11,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navigation">
               <ul class="navbar-nav mx-auto">
-                <li><h3 style="font-family:sans-serif;font-style: italic; margin-top:5px;">RAW MATERIALS MINING ANALYTIC SYSTEM</h3></li>
+                <li><h3 style="font-family:sans-serif;font-style: italic; margin-top:5px;font-size:20px;">RAW MATERIALS MINING ANALYTIC SYSTEM</h3></li>
               </ul>
   
             </div>

@@ -29,7 +29,6 @@
                 
                 setTimeout(function(){
                     var required=document.getElementById('login_fields_required');
-                    required.style.display="block";
                     required.style.display="none";
                 },4000);
 
@@ -53,7 +52,6 @@
                       
                       setTimeout(function(){
                           var required=document.getElementById('phone_diplicated');
-                          required.style.display="block";
                           required.style.display="none";
                       },5000);
 
@@ -67,7 +65,6 @@
                       
                       setTimeout(function(){
                           var required=document.getElementById('email_diplicated');
-                          required.style.display="block";
                           required.style.display="none";
                       },5000);
 
@@ -81,7 +78,6 @@
                       
                       setTimeout(function(){
                           var required=document.getElementById('password_length');
-                          required.style.display="block";
                           required.style.display="none";
                       },5000);
 
@@ -95,7 +91,6 @@
                       
                       setTimeout(function(){
                           var required=document.getElementById('password_do_not_match');
-                          required.style.display="block";
                           required.style.display="none";
                       },5000);
 
@@ -112,14 +107,15 @@
                       
                       setTimeout(function(){
                           var required=document.getElementById('account_created');
-                          required.style.display="block";
                           required.style.display="none";
+
+                          window.location.href='viewUsers.php';
                       },4000);
 
                     </script>
                   <?php
 
-                 $account_created="<p style='color:teal;text-align:center;' id='account_created'>New user created !</p>";
+                 $account_created="<p style='color:blue;text-align:center;' id='account_created'>New user created !</p>";
                }
             }
         }
@@ -234,7 +230,9 @@
     <div class="container-fluid py-4">
       
       <div class="row">
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4"></div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <button class="btn btn-info" onclick="window.location.href='viewUsers.php'"><i class="fa fa-users"></i>&nbsp;View Users</button>
+        </div>
         <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
           <div class="card z-index-0 fadeIn3 fadeInBottom">
               <div class="card-header p-0 position-relative mt-n4 z-index-2">
@@ -299,91 +297,6 @@
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4"></div>
 
       </div>
-
-      <br>
-
-      <div class="row">
-        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div>
-        <div class="col-xl-8 col-sm-6 mb-xl-0 mb-4">
-          
-            <div class="card">
-              <div class="card-header pb-0">
-                <div class="row">
-                  <div class="col-lg-12 col-7 text-center">
-                    <h6>All users - list</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body px-0 pb-2">
-                <div class="table-responsive">
-                  <table class="table align-items-center mb-0">
-                    <thead class="text-center">
-                      <tr>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Image</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-                          $users_data=mysqli_query($con,"SELECT * from users order by u_id desc");
-                          $count_users=mysqli_num_rows($users_data);
-
-                          while ($user_row=mysqli_fetch_assoc($users_data)) {
-                            $user_id=$user_row['u_id'];
-                            $name_data=$user_row['name'];
-                            $phone_data=$user_row['phone'];
-                            $email_data=$user_row['email'];
-                            $image_data=$user_row['image'];
-                                  
-                            echo '      
-                              <tr>
-                                <td class="text-center">
-                                  <div class="text-center">
-                                    <div class="justify-content-center">
-                                      <img src="../../assets/img/users/'.$image_data.'" style="border:1px solid skyblue;" class="avatar avatar-sm me-3" alt="atlassian">
-                                    </div>
-                                  </div>
-                                </td>
-                                <td>
-                                  '.$name_data.'
-                                </td>
-                                <td class="align-middle text-center text-sm">
-                                  '.$phone_data.'
-                                </td>
-                                <td class="align-middle text-center">
-                                  '.$email_data.'
-                                </td>
-                                <td class="align-middle text-center">
-                                  ';?>
-                                  <i class="far fa-edit text-info" id="eye_id" onclick="window.location.href='update_user.php?user_id=<?php echo $user_id;?>'" title="update <?php echo $name_data;?>'s data"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-trash text-danger" id="eye_id" onclick="deletefn('<?php echo $user_id;?>')" title="delete <?php echo $name_data;?>'s data"></i>
-                                  <?php
-                                '</td>
-
-                              </tr>
-                            ';
-
-                        }
-
-                        if ($count_users == 0) {
-                            echo '<tr><td class="text-center" colspan="5">No user\'s data found !</td></tr>';
-                        }
-                        
-
-                      ?>
-                      
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-        </div>
-        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div>
-      </div>
-
 
     </div>
       

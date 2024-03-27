@@ -169,14 +169,14 @@
                       </div>
                     </div>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body text-center">
                     <h6 class="mb-0 ">analytics of stored and consumed Raw materials </h6>
                     <p class="text-sm "><span class="font-weight-bolder">Stored data are in sky blue while consumed data are in pink</span></p>
                     <hr class="dark horizontal">
-                    <div class="d-flex">
-                      <i class="material-icons text-sm my-auto me-1"></i>
+                    <!-- <div class="d-flex">
+                      <i class="material-icons text-sm my-auto me-1"></i> -->
                       <p class="mb-0 text-sm">Analytic chart updated <b><?php echo $timeAgo;?></b> !</p>
-                    </div>
+                    <!-- </div> -->
                   </div>
 
                   <!---->

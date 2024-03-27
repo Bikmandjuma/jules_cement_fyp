@@ -58,6 +58,7 @@
 
                   if ($count_name == 0) {
                     
+                  
                       $query=mysqli_query($con,"INSERT INTO raw_material values ('','$name','$description','$quantity','','$unit','','','$users_id')");
 
                       if ($query == true) {
@@ -67,10 +68,9 @@
                               
                               setTimeout(function(){
                                   var required=document.getElementById('account_created');
+                                  required.style.display="block";
                                   required.style.display="none";
-                                  window.location.href='view_raw_material.php';
-
-                              },3000);
+                              },4000);
 
                             </script>
                           <?php
@@ -115,7 +115,7 @@
 <?php require 'head.php';?>
 
 <body class="g-sidenav-show  bg-gray-200">
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-info" id="sidenav-main">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-info" id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="#" target="_blank">
@@ -193,72 +193,95 @@
 
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-      
-      <div class="row">
-        <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
-          <button class="btn btn-info" onclick="window.location.href='view_raw_material.php'"><i class="fa fa-eye"></i>&nbsp;View raw materials</button>
-        </div>
-        <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
 
-          <?php echo $allfieldRequired.$account_created.$Name_exist;?>
+      <div class="row">
+        <!-- <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div> -->
+        <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4">
             
-            <div class="card z-index-0 fadeIn3 fadeInBottom">
-              
-              <div class="card-header p-0 position-relative mt-n4 z-index-2">
-                <div class="bg-gradient-success shadow-primary border-radius-lg py-3 pe-1">
-                  <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Add raw material</h4>
+            <div class="card">
+              <div class="card-header pb-0">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <button class="btn btn-info float-left" onclick="window.location.href='raw_material.php'"><i class="fa fa-plus"></i>&nbsp;Add raw material</button>
+                  </div>
+                  <div class="col-lg-8 col-7 text-center">
+                    <h6>Raw materials data</h6>
+                  </div>
                 </div>
               </div>
+              <div class="card-body px-0 pb-2">
+                <div class="table-responsive">
+                  <table class="table align-items-center mb-0 text-center">
+                    <thead class="text-center">
+                      <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Unit</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                          $users_data=mysqli_query($con,"SELECT * from raw_material order by rm_id desc");
 
-              <div class="card-body">
+                          $users_data_count=mysqli_num_rows($users_data);
 
-                <form role="form" class="text-start" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
+                          while ($user_row=mysqli_fetch_assoc($users_data)) {
+                            $rm_id=$user_row['rm_id'];
+                            $name_data=$user_row['name'];
+                            $descr_data=$user_row['description'];
+                            $qty_data=$user_row['quantity_stored'];
+                            $unit_data=$user_row['unit'];
+                                  
+                            if (strlen($descr_data) <20) {
+                              $descr_data=$descr_data;
+                            }else{
+                              $descr_data=substr($descr_data,0,80)."....";
+                            }
 
-                    <div class="row">
-                      <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-                        <div class="input-group input-group-outline">
-                          <label class="form-label">Name</label>
-                          <input type="text" class="form-control" name="name">
-                        </div>
-                      </div>
-                      <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-                        <div class="input-group input-group-outline">
-                          <label class="form-label">Quantity</label>
-                          <input type="text" class="form-control" name="qty">
-                        </div>  
-                      </div>
-                    </div>
+                            echo '      
+                              <tr>
+                                <td class="text-center">
+                                  '.$name_data.'
+                                </td>
+                                <td>
+                                  '.$qty_data.'
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                  '.$unit_data.'
+                                </td>
+                                <td class="align-middle text-center">
+                                  '.$descr_data.'
+                                </td>
+                                <td class="align-middle text-center">
+                                  ';?>
+                                  <i class="far fa-edit text-info" id="eye_id" onclick="window.location.href='update_raw_material.php?raw_material_id=<?php echo $rm_id;?>'"></i>&nbsp;&nbsp;&nbsp;
+                                  <i class="fa fa-trash text-danger" id="eye_id" onclick="deletefn('<?php echo $rm_id;?>')"></i>
+                                  <?php
+                                '</td>
 
-                    <div class="row">
-                      <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-                        <div class="input-group input-group-outline mt-4">
-                          <textarea type="text" class="form-control" name="description" placeholder="description"></textarea>
-                        </div>
-                      </div>
-                      <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-                        <div class="input-group input-group-outline mt-4">
-                          <select name="unit" class="form-control" required>
-                            <option>Select unit</option>
-                            <option value="Kg">Kilogram (kg)</option>
-                            <option value="t">Metric ton (t) or tonne</option>
-                            <option value="lb">Pound (lb)</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  
-                    <div class="text-center mx-5" style="margin-top:-4px;">
-                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="SubmitBtn"><i class="far fa-save"></i> Save</button>
-                    </div>
+                              </tr>
+                            ';
 
-                </form>
+                        }
 
+                        if ($users_data_count == 0) {
+                                echo '<tr><td colspan="5" class="text-center">No data found in table !</td></tr>';
+                        }
+
+                      ?>
+                      
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
         </div>
-        <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4"></div>
+        <!-- <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div> -->
       </div>
+
 
     </div>
       

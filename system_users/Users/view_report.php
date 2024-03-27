@@ -104,10 +104,9 @@
                             <script type="text/javascript">
                               setTimeout(function(){
                                 var data_added=document.getElementById('report_added');
+                                data_added.style.display="block";
                                 data_added.style.display="none";
-                                window.location.href='view_report.php';
-
-                              },3000);
+                              },5000);
                             </script>
 
                         <?php
@@ -217,81 +216,128 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       <div class="row">
-        <div class="col-xl-3 col-sm-6">
-          <button class="btn btn-info" onclick="window.location.href='view_report.php'"><i class="fa fa-list-alt"></i>&nbsp;View report</button>
-        </div>
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-            <?php
-                echo $data_inserted.$high_qty_consumed;
-            ?>
-            <div class="card z-index-0 fadeIn3 fadeInBottom">
-              
-              <div class="card-header p-0 position-relative mt-n4 z-index-2">
-                <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-                  <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Report form</h4>
+        <!-- <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div> -->
+        <div class="col-xl-12 col-sm-6 mb-xl-0 mb-4">
+            
+            <div class="card mt-3">
+              <div class="card-header pb-0">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <button class="btn btn-info" onclick="window.location.href='report.php'"><i class="fa fa-plus"></i>&nbsp;Add report</button>
+                  </div>
+                  <div class="col-lg-5 col-7 text-center">
+                    <h6>Report data</h6>
+                  </div>
+                  <div class="col-lg-3 col-7 text-center">
+                    <button class="btn btn-success" onclick="window.location.href='generate_report.php'" style="float:right;" id="generate_report_btn_id">Generate report</button>
+                  </div>
                 </div>
               </div>
+              <div class="card-body px-0 pb-2">
+                <div class="table-responsive">
+                  <table class="table align-items-center mb-0 text-center table-bordered table-striped" id="example1">
+                    <thead class="text-center">
+                      <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">N<sup>o</sup></th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">name</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Qty_stored</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Qty_consumed</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Qty_left_in_store</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Time_ago</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                          $report_data=mysqli_query($con,"SELECT * from raw_material where quantity_consumed != 0 and raw_material.user_fk_id=".$users_id." ");
 
-              <div class="card-body">
+                          $report_data_count=mysqli_num_rows($report_data);
+                          $count=1;
+                          while ($report_row=mysqli_fetch_assoc($report_data)) {
+                            $report_id=$report_row['rm_id'];
+                            $report_name=$report_row['name'];
+                            $quantity_stored=$report_row['quantity_stored'];
+                            $quantity_consumed=$report_row['quantity_consumed'];
+                            $report_rdate=$report_row['consumed_time'];
+                            $report_descr=$report_row['consumed_descr'];
+                            $report_unit=$report_row['unit'];
 
-                <form role="form" class="text-start" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST" enctype="multipart/form-data">
+                            // Your timestamp or date string
+                            $timestamp = $report_rdate;
 
-                    <div class="row">
-                        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-                            <div class="input-group input-group-outline">
+                            // Create DateTime objects for the current time and the timestamp
+                            $currentDateTime = new DateTime();
+                            $timestampDateTime = new DateTime($timestamp);
 
-                            <select name="Raw_material" class="form-control" required>
-                              <option value="">Select raw material</option>
-                              <?php 
+                            // Calculate the difference
+                            $difference = $currentDateTime->diff($timestampDateTime);
+
+                            // Format the difference as "X time ago"
+                            if ($difference->y > 0) {
+                                $timeAgo = $difference->y . ' year' . ($difference->y > 1 ? 's' : '') . ' ago';
+                            } elseif ($difference->m > 0) {
+                                $timeAgo = $difference->m . ' month' . ($difference->m > 1 ? 's' : '') . ' ago';
+                            } elseif ($difference->d > 0) {
+                                $timeAgo = $difference->d . ' day' . ($difference->d > 1 ? 's' : '') . ' ago';
+                            } elseif ($difference->h > 0) {
+                                $timeAgo = $difference->h . ' hour' . ($difference->h > 1 ? 's' : '') . ' ago';
+                            } elseif ($difference->i > 0) {
+                                $timeAgo = $difference->i . ' minute' . ($difference->i > 1 ? 's' : '') . ' ago';
+                            } else {
+                                $timeAgo = 'just now';
+                            }
+
                                   
-                                  $raw_mater_sql=mysqli_query($con,"SELECT * from raw_material");
-                                  while ($row_select_raw_mater=mysqli_fetch_assoc($raw_mater_sql)) {
-                                    $rm_id=$row_select_raw_mater['rm_id'];
-                                    $rm_name=$row_select_raw_mater['name'];
-                                    echo "<option value='".$rm_id."'>".$rm_name."</option>";
-                                  }
-                              ?>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-                            <div class="input-group input-group-outline">
-                              <label class="form-label">Quantity consumed</label>
-                              <input type="number" class="form-control" name="quantity_consumed" required>
-                            </div> 
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-                            <div class="input-group input-group-outline mt-4">
-                              <select name="unit" class="form-control" required>
-                                <option>Select unit</option>
-                                <option value="Kg">Kilogram (kg)</option>
-                                <option value="t">Metric ton (t) or tonne</option>
-                                <option value="lb">Pound (lb)</option>
-                              </select>
-                          </div>
-                        </div>
-                        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-                            <div class="input-group input-group-outline mt-4">
-                              <textarea type="text" class="form-control" name="description" placeholder="description"></textarea>
-                            </div> 
-                        </div>
-                        
-                    </div>
-                        
-                    <div class="text-center mx-5" style="margin-top:-4px;">
-                        <button type="submit" class="btn bg-gradient-info w-100 my-4 mb-2" name="SubmitfileStorage"><i class="far fa-save"></i> Save report</button>
-                    </div>
+                            echo '      
+                              <tr>
+                                <td class="text-center">
+                                  '.$count++.'
+                                </td>
+                                <td>
+                                  '.$report_name.'
+                                </td>
+                                <td class="align-middle text-center">
+                                  '.$report_descr.'
+                                </td>
+                                <td class="align-middle text-center">
+                                  '.$quantity_stored.$report_unit.'
+                                </td>
+                                <td class="align-middle text-center">
+                                  '.$quantity_consumed.$report_unit.'
+                                </td>
+                                <td class="align-middle text-center text-info">
+                                  '.$quantity_stored-$quantity_consumed.$report_unit.'
+                                </td>
+                                
+                                <td class="align-middle text-center">
+                                  '.$timeAgo.'
+                                </td>
+                                  
+                              </tr>
+                            ';
 
-                </form>
+                        }
+
+                        if ($report_data_count == 0) {
+                                echo '<tr><td colspan="7" class="text-center">No report\'s data found in table !</td></tr>';
+                            ?>
+                              <script>
+                                document.getElementById('generate_report_btn_id').style.display='none';
+                              </script>
+                            <?php
+                        }
+
+                      ?>
+                      
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
         </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4"></div>
+        <!-- <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4"></div> -->
+
       </div>
       
   </main>
